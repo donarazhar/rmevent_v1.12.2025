@@ -572,7 +572,7 @@
 
                 {{-- View All Testimonials --}}
                 <div class="text-center mt-12">
-                    <a href="{{ route('feedback.testimonials') }}"
+                    <a href="{{ route('testimonials') }}"
                         class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#0053C5] to-[#003d8f] text-white font-semibold rounded-full hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                         Lihat Semua Testimoni
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

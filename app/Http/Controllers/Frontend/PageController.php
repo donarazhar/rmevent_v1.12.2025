@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Frontend/PageController.php
 
 namespace App\Http\Controllers\Frontend;
 
@@ -15,10 +14,28 @@ class PageController extends Controller
      */
     public function show($slug)
     {
+        // Try to find page
         $page = Page::published()
             ->with('media')
             ->where('slug', $slug)
-            ->firstOrFail();
+            ->first();
+
+        // If page not found, create basic page data for special templates
+        if (!$page) {
+            // For special pages, create temporary page object
+            if (in_array($slug, ['contact', 'about', 'faq', 'gallery', 'privacy-policy', 'terms-of-service'])) {
+                $page = new Page([
+                    'title' => ucwords(str_replace('-', ' ', $slug)),
+                    'slug' => $slug,
+                    'content' => '',
+                    'template' => $this->getTemplateForSlug($slug),
+                    'status' => Page::STATUS_PUBLISHED,
+                ]);
+            } else {
+                // For other pages, throw 404
+                abort(404, 'Page not found');
+            }
+        }
 
         // Special handling for FAQ page
         if ($page->template === 'faq') {
@@ -39,24 +56,32 @@ class PageController extends Controller
     }
 
     /**
+     * Get template name for slug
+     */
+    private function getTemplateForSlug($slug)
+    {
+        $templates = [
+            'contact' => 'contact',
+            'faq' => 'faq',
+            'gallery' => 'gallery',
+        ];
+
+        return $templates[$slug] ?? 'default';
+    }
+
+    /**
      * Display FAQ page
      */
     private function showFaq($page)
     {
-        $categories = Category::active()
-            ->ofType(Category::TYPE_GENERAL)
-            ->where('slug', 'like', 'faq%')
-            ->withCount('faqs')
-            ->ordered()
-            ->get();
-
+        // Get FAQs grouped by category
         $faqs = FAQ::active()
             ->with('category')
             ->ordered()
             ->get()
             ->groupBy('category.name');
 
-        return view('frontend.pages.faq', compact('page', 'categories', 'faqs'));
+        return view('frontend.pages.faq', compact('page', 'faqs'));
     }
 
     /**
@@ -65,15 +90,18 @@ class PageController extends Controller
     private function showGallery($page)
     {
         // Get media from events and posts
-        $eventMedia = \App\Models\Media::whereIn('mediable_type', [
-            'App\Models\Event',
-            'App\Models\Post'
-        ])
-            ->images()
-            ->inCollection('gallery')
-            ->with('mediable')
-            ->orderBy('created_at', 'desc')
-            ->paginate(24);
+        $eventMedia = collect([]); // Empty collection for now
+        
+        // TODO: Implement media retrieval when Media model is ready
+        // $eventMedia = \App\Models\Media::whereIn('mediable_type', [
+        //     'App\Models\Event',
+        //     'App\Models\Post'
+        // ])
+        //     ->images()
+        //     ->inCollection('gallery')
+        //     ->with('mediable')
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(24);
 
         return view('frontend.pages.gallery', compact('page', 'eventMedia'));
     }
@@ -83,12 +111,13 @@ class PageController extends Controller
      */
     private function showContact($page)
     {
+        // Use hardcoded contact info for now
         $contactInfo = [
-            'email' => setting('contact_email'),
-            'phone' => setting('contact_phone'),
-            'address' => setting('contact_address'),
-            'maps_url' => setting('contact_maps_url'),
-            'maps_embed' => setting('contact_maps_embed'),
+            'email' => config('mail.from.address', 'info@ramadhan1447.id'),
+            'phone' => '+62 812-3456-7890',
+            'address' => 'Jl. Contoh No. 123, Jakarta Selatan 12345',
+            'maps_url' => 'https://maps.google.com',
+            'maps_embed' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.23565174238!2d106.68942999999999!3d-6.229386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x5371bf0fdad786a2!2sJakarta!5e0!3m2!1sen!2sid!4v1234567890" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
         ];
 
         return view('frontend.pages.contact', compact('page', 'contactInfo'));

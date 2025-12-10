@@ -119,23 +119,20 @@ Route::prefix('registrations')->name('registrations.')->group(function () {
 // FEEDBACK & TESTIMONIAL ROUTES 💬
 // =============================================================================
 
-Route::prefix('feedback')->name('feedback.')->group(function () {
-    // General Feedback Form
-    Route::get('/create', [FeedbackController::class, 'create'])->name('create');
+// Public Testimonials Page (harus di luar prefix agar route name-nya 'testimonials')
+Route::get('/testimonials', [FeedbackController::class, 'testimonials'])->name('testimonials');
 
-    // Event-specific Feedback Form
-    Route::get('/events/{eventSlug}', [FeedbackController::class, 'create'])->name('event');
+Route::prefix('feedback')->name('feedback.')->group(function () {
+    // Feedback Form - bisa untuk general atau event-specific
+    // URL: /feedback/create (general) atau /feedback/create/{event-slug} (event-specific)
+    Route::get('/create/{eventSlug?}', [FeedbackController::class, 'create'])->name('create');
 
     // Submit Feedback
-    Route::post('/', [FeedbackController::class, 'store'])->name('store');
+    Route::post('/store', [FeedbackController::class, 'store'])->name('store');
 
-    // Success Page
+    // Success Page after submission
     Route::get('/success', [FeedbackController::class, 'success'])->name('success');
-
-    // Public Testimonials Page
-    Route::get('/testimonials', [FeedbackController::class, 'testimonials'])->name('testimonials');
 });
-
 
 // =============================================================================
 // CONTACT ROUTES 📧
@@ -151,16 +148,18 @@ Route::prefix('contact')->name('contact.')->group(function () {
 // STATIC PAGES ROUTES 📄
 // =============================================================================
 
-// Dynamic Pages (About, FAQ, Gallery, Contact, Privacy Policy, Terms, etc.)
-Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+Route::name('pages.')->group(function () {
+    // Dynamic page route
+    Route::get('/pages/{slug}', [PageController::class, 'show'])->name('show');
+});
 
-// Common static pages shortcuts (optional - bisa diaktifkan sesuai kebutuhan)
-Route::get('/about', fn() => redirect()->route('pages.show', 'about'))->name('about');
-Route::get('/faq', fn() => redirect()->route('pages.show', 'faq'))->name('faq');
-Route::get('/gallery', fn() => redirect()->route('pages.show', 'gallery'))->name('gallery');
-Route::get('/contact', fn() => redirect()->route('pages.show', 'contact'))->name('contact');
-Route::get('/privacy-policy', fn() => redirect()->route('pages.show', 'privacy-policy'))->name('privacy');
-Route::get('/terms-of-service', fn() => redirect()->route('pages.show', 'terms-of-service'))->name('terms');
+// Shortcut routes (redirect atau direct)
+Route::get('/about', [PageController::class, 'show'])->defaults('slug', 'about')->name('about');
+Route::get('/faq', [PageController::class, 'show'])->defaults('slug', 'faq')->name('faq');
+Route::get('/gallery', [PageController::class, 'show'])->defaults('slug', 'gallery')->name('gallery');
+Route::get('/contact', [PageController::class, 'show'])->defaults('slug', 'contact')->name('contact');
+Route::get('/privacy-policy', [PageController::class, 'show'])->defaults('slug', 'privacy-policy')->name('privacy');
+Route::get('/terms-of-service', [PageController::class, 'show'])->defaults('slug', 'terms-of-service')->name('terms');
 
 // =============================================================================
 // ADMIN ROUTES 👨‍💼

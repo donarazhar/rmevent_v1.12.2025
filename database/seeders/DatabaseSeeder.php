@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\EventRegistration;
+use App\Models\Feedback;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             EventSeeder::class,
             EventRegistrationSeeder::class,
+            FeedbackSeeder::class,
         ]);
     }
 }
