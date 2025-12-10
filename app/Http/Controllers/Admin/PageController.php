@@ -50,7 +50,6 @@ class PageController extends Controller
             return redirect()
                 ->route('admin.pages.index')
                 ->with('success', 'Halaman berhasil dibuat.');
-
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -96,13 +95,22 @@ class PageController extends Controller
             return redirect()
                 ->route('admin.pages.index')
                 ->with('success', 'Halaman berhasil diupdate.');
-
         } catch (\Exception $e) {
             return redirect()
                 ->back()
                 ->withInput()
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Display the specified page
+     */
+    public function show(Page $page)
+    {
+        $page->load('parent', 'children');
+
+        return view('admin.pages.show', compact('page'));
     }
 
     public function destroy(Page $page)
@@ -120,7 +128,6 @@ class PageController extends Controller
             return redirect()
                 ->route('admin.pages.index')
                 ->with('success', 'Halaman berhasil dihapus.');
-
         } catch (\Exception $e) {
             return redirect()
                 ->back()
