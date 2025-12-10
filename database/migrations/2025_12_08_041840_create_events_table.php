@@ -31,7 +31,7 @@ return new class extends Migration
             $table->integer('max_participants')->nullable(); // null = unlimited
             $table->integer('current_participants')->default(0);
             $table->boolean('is_free')->default(true);
-            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('price', 10, 2)->nullable()->default(0);
             
             // Requirements
             $table->json('registration_fields')->nullable(); // Custom form fields

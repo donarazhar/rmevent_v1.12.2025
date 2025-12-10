@@ -6,34 +6,53 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            
+            // Basic Information
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone', 20)->nullable();
-            $table->string('avatar')->nullable();
+            
+            // Role & Status
             $table->enum('role', ['admin', 'panitia', 'jamaah'])->default('jamaah');
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            
+            // Profile
+            $table->string('avatar')->nullable();
+            $table->text('bio')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
+            $table->string('postal_code')->nullable();
+            
+            // Remember Token
             $table->rememberToken();
+            
+            // Timestamps
             $table->timestamps();
-            $table->softDeletes();
-
-            // Indexes untuk performa
+            
+            // Indexes
             $table->index('email');
             $table->index('role');
             $table->index('status');
         });
 
+        // Create password reset tokens table
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
+        // Create sessions table (if using database session driver)
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -44,6 +63,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('sessions');

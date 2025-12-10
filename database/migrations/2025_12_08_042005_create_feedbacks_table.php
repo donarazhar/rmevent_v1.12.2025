@@ -1,5 +1,4 @@
 <?php
-// database/migrations/2024_01_01_000007_create_feedbacks_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -7,59 +6,74 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('event_id')->nullable()->constrained('events')->onDelete('cascade');
-            $table->foreignId('registration_id')->nullable()->constrained('event_registrations')->onDelete('set null');
+            
+            // User & Event References
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('event_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('registration_id')->nullable()->constrained('event_registrations')->nullOnDelete();
             
             // Feedback Type
-            $table->enum('type', ['testimonial', 'suggestion', 'complaint', 'general'])->default('general');
+            $table->enum('type', ['general', 'event', 'testimonial', 'complaint', 'suggestion'])
+                  ->default('general');
             
-            // Contact Info (if user is not logged in)
+            // Contact Information (for non-authenticated users)
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             
-            // Rating System
-            $table->unsignedTinyInteger('overall_rating')->nullable(); // 1-5
-            $table->unsignedTinyInteger('event_rating')->nullable();
-            $table->unsignedTinyInteger('facility_rating')->nullable();
-            $table->unsignedTinyInteger('service_rating')->nullable();
-            
             // Feedback Content
             $table->string('subject')->nullable();
             $table->text('message');
-            $table->json('suggestions')->nullable(); // Structured suggestions
             
-            // Media
-            $table->json('attachments')->nullable(); // Images/documents
+            // Ratings (1-5 scale)
+            $table->unsignedTinyInteger('overall_rating')->nullable();
+            $table->unsignedTinyInteger('content_rating')->nullable();
+            $table->unsignedTinyInteger('speaker_rating')->nullable();
+            $table->unsignedTinyInteger('venue_rating')->nullable();
+            $table->unsignedTinyInteger('organization_rating')->nullable();
             
-            // Status & Response
-            $table->enum('status', ['new', 'in_review', 'responded', 'resolved', 'archived'])->default('new');
-            $table->text('admin_response')->nullable();
-            $table->foreignId('responded_by')->nullable()->constrained('users')->onDelete('set null');
-            $table->timestamp('responded_at')->nullable();
+            // NPS Score (0-10)
+            $table->unsignedTinyInteger('recommendation_score')->nullable();
             
-            // Display Settings
-            $table->boolean('is_published')->default(false); // Show as testimonial
+            // Additional Feedback
+            $table->text('suggestions')->nullable();
+            
+            // Publishing Settings
+            $table->boolean('is_published')->default(false);
             $table->boolean('is_featured')->default(false);
             $table->integer('display_order')->default(0);
             
-            // Privacy
-            $table->boolean('is_anonymous')->default(false);
+            // Status Tracking
+            $table->enum('status', ['new', 'in_review', 'responded', 'resolved', 'archived'])
+                  ->default('new');
+            
+            // Admin Response
+            $table->text('admin_response')->nullable();
+            $table->foreignId('responded_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('responded_at')->nullable();
             
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index(['type', 'status']);
-            $table->index(['is_published', 'is_featured']);
-            $table->index('event_id');
+            // Indexes
+            $table->index('type');
+            $table->index('status');
+            $table->index('is_published');
+            $table->index('overall_rating');
+            $table->index('created_at');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('feedbacks');
