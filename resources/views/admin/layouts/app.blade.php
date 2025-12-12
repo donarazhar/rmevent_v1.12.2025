@@ -36,6 +36,8 @@
 
     {{-- Alpine.js --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+
 
     {{-- Chart.js --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -43,6 +45,30 @@
     <style>
         [x-cloak] {
             display: none !important;
+        }
+
+        /* Custom scrollbar untuk sidebar */
+        .sidebar-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Firefox */
+        .sidebar-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
     </style>
 

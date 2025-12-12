@@ -10,6 +10,8 @@ class Media extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'media';
+
     protected $fillable = [
         'title',
         'description',
@@ -29,6 +31,24 @@ class Media extends Model
         'uploaded_by',
         'collection',
         'order',
+    ];
+
+    /**
+     * The attributes that should have default values.
+     */
+    protected $attributes = [
+        'order' => 0,
+        'collection' => 'general',
+        'disk' => 'public',
+        'mediable_type' => null,
+        'mediable_id' => null,
+        'title' => null,
+        'description' => null,
+        'alt_text' => null,
+        'thumbnail_path' => null,
+        'metadata' => null,
+        'width' => null,
+        'height' => null,
     ];
 
     protected function casts(): array
@@ -94,7 +114,7 @@ class Media extends Model
 
     public function getThumbnailUrlAttribute(): ?string
     {
-        return $this->thumbnail_path 
+        return $this->thumbnail_path
             ? \Storage::disk($this->disk)->url($this->thumbnail_path)
             : null;
     }
