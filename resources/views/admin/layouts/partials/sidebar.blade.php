@@ -129,10 +129,10 @@
             {{-- Timeline & Milestone --}}
             <x-sidebar-dropdown title="Timeline & Milestone"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>'
-                :active="request()->routeIs('admin.timeline.*', 'admin.milestones.*', 'admin.progress-reports.*')">
+                :active="request()->routeIs('admin.timeline.*', 'admin.milestone.*', 'admin.progress-reports.*')">
                 <x-sidebar-link href="{{ route('admin.timeline.index') }}" :active="request()->routeIs('admin.timeline.index')">Project
                     Timeline</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.milestones.index') }}" :active="request()->routeIs('admin.milestones.*')">Milestone
+                <x-sidebar-link href="{{ route('admin.milestone.index') }}" :active="request()->routeIs('admin.milestone.*')">Milestone
                     Tracking</x-sidebar-link>
                 <x-sidebar-link href="{{ route('admin.progress-reports.index') }}" :active="request()->routeIs('admin.progress-reports.*')">Progress
                     Reports</x-sidebar-link>

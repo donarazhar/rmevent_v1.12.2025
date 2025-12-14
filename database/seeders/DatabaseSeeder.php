@@ -31,6 +31,9 @@ class DatabaseSeeder extends Seeder
             CommitteeSeeder::class,
             JobDescriptionSeeder::class,
             PerformanceEvaluationSeeder::class,
+            ProjectTimelineSeeder::class,
+            MilestoneSeeder::class,
+            ProgressReportSeeder::class,
         ]);
     }
 }

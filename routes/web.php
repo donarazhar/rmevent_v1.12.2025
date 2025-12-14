@@ -361,12 +361,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/export', [ProjectTimelineController::class, 'export'])->name('export');
     });
 
-    // Milestones
-    Route::resource('milestones', MilestoneController::class);
-    Route::post('/milestones/{milestone}/complete', [MilestoneController::class, 'complete'])->name('milestones.complete');
-    Route::post('/milestones/{milestone}/reopen', [MilestoneController::class, 'reopen'])->name('milestones.reopen');
-    Route::post('/milestones/bulk-update-status', [MilestoneController::class, 'bulkUpdateStatus'])->name('milestones.bulk-update-status');
+    // Milestone Tracking
+    Route::prefix('milestone')->name('milestone.')->group(function () {
+        Route::get('/', [MilestoneController::class, 'index'])->name('index');
+        Route::post('/', [MilestoneController::class, 'store'])->name('store');
+        Route::put('/{milestone}', [MilestoneController::class, 'update'])->name('update');
+        Route::delete('/{milestone}', [MilestoneController::class, 'destroy'])->name('destroy');
 
+        // Special Actions
+        Route::post('/{milestone}/complete', [MilestoneController::class, 'complete'])->name('complete');
+        Route::post('/{milestone}/verify', [MilestoneController::class, 'verify'])->name('verify');
+        Route::post('/{milestone}/reopen', [MilestoneController::class, 'reopen'])->name('reopen');
+
+        // Views
+        Route::get('/timeline', [MilestoneController::class, 'timeline'])->name('timeline');
+        Route::get('/kanban', [MilestoneController::class, 'kanban'])->name('kanban');
+    });
+    
     // Progress Reports
     Route::resource('progress-reports', ProgressReportController::class);
     Route::post('/progress-reports/{report}/submit', [ProgressReportController::class, 'submit'])->name('progress-reports.submit');

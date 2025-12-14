@@ -29,7 +29,7 @@ return new class extends Migration
             // Progress
             $table->integer('progress_percentage')->default(0);
             $table->enum('status', ['pending', 'in_progress', 'completed', 'delayed', 'cancelled'])->default('pending');
-            $table->enum('priority', ['low', 'medium', 'high', 'critical'])->default('medium');
+            $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('medium');
             
             // Responsibility
             $table->foreignId('responsible_person')->nullable()->constrained('users')->onDelete('set null');

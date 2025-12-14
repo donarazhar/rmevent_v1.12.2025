@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('code')->unique(); // TASK-001
             
             // Hierarchy & Order
-            $table->integer('level')->default(1); // 1=Phase, 2=Task, 3=Subtask
+            $table->integer('level')->default(0); // Changed from 1 to 0
             $table->integer('order')->default(0);
             
             // Timeline
@@ -37,7 +37,7 @@ return new class extends Migration
             // Progress
             $table->integer('progress_percentage')->default(0);
             $table->enum('status', ['not_started', 'in_progress', 'completed', 'delayed', 'cancelled'])->default('not_started');
-            $table->enum('priority', ['low', 'medium', 'high', 'critical'])->default('medium');
+            $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('medium'); // Changed 'critical' to 'urgent'
             
             // Dependencies
             $table->json('dependencies')->nullable(); // Array of timeline IDs that must be completed first
@@ -45,8 +45,8 @@ return new class extends Migration
             // Resources
             $table->decimal('estimated_budget', 15, 2)->nullable();
             $table->decimal('actual_budget', 15, 2)->nullable();
-            $table->integer('estimated_hours')->nullable();
-            $table->integer('actual_hours')->nullable();
+            $table->decimal('estimated_hours', 10, 2)->nullable(); // Changed to decimal for 0.5 hours support
+            $table->decimal('actual_hours', 10, 2)->nullable(); // Changed to decimal for 0.5 hours support
             
             // Notes & Updates
             $table->text('notes')->nullable();
