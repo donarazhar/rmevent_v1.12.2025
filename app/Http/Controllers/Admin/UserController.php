@@ -7,9 +7,13 @@ use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of users
+     */
     public function index(Request $request)
     {
         $query = User::query();
@@ -47,6 +51,9 @@ class UserController extends Controller
         return view('admin.users.index', compact('users', 'stats'));
     }
 
+    /**
+     * Show the form for creating a new user
+     */
     public function create()
     {
         $roles = [
@@ -64,6 +71,9 @@ class UserController extends Controller
         return view('admin.users.create', compact('roles', 'statuses'));
     }
 
+    /**
+     * Store a newly created user in storage
+     */
     public function store(UserRequest $request)
     {
         try {
@@ -91,6 +101,9 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified user
+     */
     public function edit(User $user)
     {
         $roles = [
@@ -108,6 +121,9 @@ class UserController extends Controller
         return view('admin.users.edit', compact('user', 'roles', 'statuses'));
     }
 
+    /**
+     * Update the specified user in storage
+     */
     public function update(UserRequest $request, User $user)
     {
         try {
@@ -124,7 +140,7 @@ class UserController extends Controller
             if ($request->hasFile('avatar')) {
                 // Delete old avatar
                 if ($user->avatar) {
-                    \Storage::disk('public')->delete($user->avatar);
+                    Storage::disk('public')->delete($user->avatar);
                 }
                 $path = $request->file('avatar')->store('avatars', 'public');
                 $data['avatar'] = $path;
@@ -144,6 +160,9 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Remove the specified user from storage
+     */
     public function destroy(User $user)
     {
         // Prevent deletion of own account
@@ -156,7 +175,7 @@ class UserController extends Controller
         try {
             // Delete avatar
             if ($user->avatar) {
-                \Storage::disk('public')->delete($user->avatar);
+                Storage::disk('public')->delete($user->avatar);
             }
 
             $user->delete();
@@ -169,6 +188,54 @@ class UserController extends Controller
             return redirect()
                 ->back()
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Toggle user status (active/inactive)
+     */
+    public function toggleStatus(User $user)
+    {
+        try {
+            $newStatus = $user->status === User::STATUS_ACTIVE 
+                ? User::STATUS_INACTIVE 
+                : User::STATUS_ACTIVE;
+
+            $user->update(['status' => $newStatus]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status user berhasil diubah',
+                'status' => $newStatus
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah status: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Reset user password
+     */
+    public function resetPassword(User $user)
+    {
+        try {
+            $newPassword = 'password123'; // Default password
+            $user->update([
+                'password' => Hash::make($newPassword)
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password berhasil direset ke: ' . $newPassword
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal reset password: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

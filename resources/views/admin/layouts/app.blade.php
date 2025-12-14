@@ -87,6 +87,42 @@
 
             {{-- Page Content --}}
             <main class="flex-1 overflow-y-auto bg-gray-100 p-6">
+                {{-- Flash Messages --}}
+                @if (session('success'))
+                    <x-alert type="success">
+                        {{ session('success') }}
+                    </x-alert>
+                @endif
+
+                @if (session('error'))
+                    <x-alert type="error">
+                        {{ session('error') }}
+                    </x-alert>
+                @endif
+
+                @if (session('warning'))
+                    <x-alert type="warning">
+                        {{ session('warning') }}
+                    </x-alert>
+                @endif
+
+                @if (session('info'))
+                    <x-alert type="info">
+                        {{ session('info') }}
+                    </x-alert>
+                @endif
+
+                @if ($errors->any())
+                    <x-alert type="error">
+                        <strong>Terdapat {{ $errors->count() }} kesalahan:</strong>
+                        <ul class="mt-2 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </x-alert>
+                @endif
+
                 @yield('content')
             </main>
         </div>

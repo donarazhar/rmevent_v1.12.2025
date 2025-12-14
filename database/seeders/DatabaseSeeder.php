@@ -28,6 +28,9 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             EventRegistrationSeeder::class,
             FeedbackSeeder::class,
+            CommitteeSeeder::class,
+            JobDescriptionSeeder::class,
+            PerformanceEvaluationSeeder::class,
         ]);
     }
 }

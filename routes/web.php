@@ -318,12 +318,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Kepanitiaan
     // -------------------------------------------------------------------------
 
-    // Committee Structure
+    // Committee Structure - MENGGUNAKAN RESOURCE ROUTE
     Route::prefix('committee')->name('committee.')->group(function () {
-        Route::get('/structure', [CommitteeStructureController::class, 'index'])->name('structure');
+        // CRUD routes
+        Route::get('/structure', [CommitteeStructureController::class, 'index'])->name('structure.index');
+        Route::get('/structure/create', [CommitteeStructureController::class, 'create'])->name('structure.create');
         Route::post('/structure', [CommitteeStructureController::class, 'store'])->name('structure.store');
+        Route::get('/structure/{structure}/edit', [CommitteeStructureController::class, 'edit'])->name('structure.edit');
         Route::put('/structure/{structure}', [CommitteeStructureController::class, 'update'])->name('structure.update');
         Route::delete('/structure/{structure}', [CommitteeStructureController::class, 'destroy'])->name('structure.destroy');
+
+        // Custom actions
         Route::post('/structure/reorder', [CommitteeStructureController::class, 'reorder'])->name('structure.reorder');
         Route::get('/structure/export', [CommitteeStructureController::class, 'export'])->name('structure.export');
     });
