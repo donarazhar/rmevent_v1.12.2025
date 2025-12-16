@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             BudgetItemSeeder::class,       
             BudgetAllocationSeeder::class,
             SponsorshipSeeder::class,
+            IncomeSeeder::class,
         ]);
     }
 }

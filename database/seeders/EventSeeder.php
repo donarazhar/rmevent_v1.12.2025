@@ -7,291 +7,204 @@ use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class EventSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Get categories for events
         $categories = Category::where('type', Category::TYPE_EVENT)->get();
-        
+
         if ($categories->isEmpty()) {
             $this->command->warn('Please run CategorySeeder first!');
             return;
         }
 
-        // Create or get tags
         $tags = $this->createTags();
 
-        // Calculate dates (events spanning across Ramadhan 2025)
-        $ramadhanStart = now()->addMonths(3); // Adjust sesuai kalender Hijriyah
-        
-        // Events data
+        // Base date Ramadhan 1436 H (disesuaikan dengan tahun berjalan)
+        $ramadhanStart = Carbon::parse('2026-06-18'); // 1 Ramadhan 1436 H
+
         $events = [
             // Kajian Ramadhan
             [
-                'title' => 'Kajian Tafsir Al-Quran Juz 30',
+                'title' => 'Kuliah Subuh: Ramadhan dan Persaudaraan',
                 'category' => 'Kajian Ramadhan',
-                'description' => 'Kajian mendalam tentang tafsir juz 30 (Juz Amma) oleh Ustadz Dr. Ahmad Satori, Lc., MA',
-                'location' => 'Masjid Al-Ikhlas, Jakarta Selatan',
-                'start_datetime' => $ramadhanStart->copy()->addDays(5)->setTime(20, 30),
-                'end_datetime' => $ramadhanStart->copy()->addDays(5)->setTime(22, 0),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(4),
-                'max_participants' => 200,
+                'description' => 'Kajian ba\'da Subuh dengan tema Ramadhan dan Persaudaraan oleh Drs. H. Amliwazir Saidi',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => $ramadhanStart->copy()->addDays(0)->setTime(5, 0),
+                'end_datetime' => $ramadhanStart->copy()->addDays(0)->setTime(6, 0),
                 'is_free' => true,
-                'tags' => ['Kajian', 'Tafsir', 'Al-Quran', 'Ramadhan'],
-                'is_featured' => true,
-                'requirements' => 'Membawa Al-Quran dan alat tulis',
-                'contact_person' => 'Panitia Kajian',
-                'contact_phone' => '081234567890',
-                'contact_email' => 'kajian@ramadhan1447.id',
-            ],
-            [
-                'title' => 'Kajian Fiqih Puasa dan Zakat',
-                'category' => 'Kajian Ramadhan',
-                'description' => 'Pembahasan lengkap seputar fiqih puasa dan zakat fitrah bersama Ustadz Prof. Dr. Yusuf Mansur',
-                'location' => 'Aula Islamic Center, Bekasi',
-                'start_datetime' => $ramadhanStart->copy()->addDays(10)->setTime(19, 30),
-                'end_datetime' => $ramadhanStart->copy()->addDays(10)->setTime(21, 30),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(9),
-                'max_participants' => 300,
-                'is_free' => true,
-                'tags' => ['Kajian', 'Fiqih', 'Puasa', 'Zakat'],
+                'tags' => ['Kuliah Subuh', 'Kajian', 'Ramadhan'],
                 'is_featured' => true,
             ],
             [
-                'title' => 'Tausiyah Ramadhan: Menggapai Malam Lailatul Qadr',
-                'category' => 'Kajian Ramadhan',
-                'description' => 'Kajian spesial tentang keutamaan dan cara mencari Lailatul Qadr',
-                'location' => 'Masjid Agung At-Tin, Jakarta Timur',
-                'start_datetime' => $ramadhanStart->copy()->addDays(20)->setTime(21, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(20)->setTime(23, 0),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(19),
-                'max_participants' => 500,
+                'title' => 'Tarawih dan Taushiyah: Mengapa Harus Berpuasa',
+                'category' => 'Tarawih Berjamaah',
+                'description' => 'Shalat tarawih 8 rakaat + witir dilanjutkan taushiyah tentang kewajiban puasa',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => $ramadhanStart->copy()->addDays(0)->setTime(20, 0),
+                'end_datetime' => $ramadhanStart->copy()->addDays(0)->setTime(21, 30),
                 'is_free' => true,
-                'tags' => ['Kajian', 'Lailatul Qadr', 'Ramadhan'],
+                'tags' => ['Tarawih', 'Ceramah', 'Ramadhan'],
                 'is_featured' => true,
             ],
 
-            // Tilawah Al-Quran
+            // Tilawah & Tadarus
             [
-                'title' => 'Pelatihan Tahsin Al-Quran untuk Pemula',
+                'title' => 'Tadarus Al-Quran Sebelum Dzuhur',
                 'category' => 'Tilawah Al-Quran',
-                'description' => 'Program pelatihan tahsin Al-Quran dari dasar untuk pemula. Materi meliputi makhorijul huruf dan tajwid dasar.',
-                'location' => 'Pesantren Modern Al-Hikmah, Tangerang',
-                'start_datetime' => $ramadhanStart->copy()->addDays(1)->setTime(14, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(1)->setTime(16, 0),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->subDays(1),
-                'max_participants' => 50,
-                'is_free' => false,
-                'price' => 150000,
-                'tags' => ['Tilawah', 'Tahsin', 'Al-Quran', 'Pelatihan'],
+                'description' => 'Tadarus Al-Quran berjamaah setiap hari sebelum shalat Dzuhur',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => $ramadhanStart->copy()->setTime(11, 0),
+                'end_datetime' => $ramadhanStart->copy()->addDays(28)->setTime(12, 0),
+                'is_free' => true,
+                'tags' => ['Tadarus', 'Al-Quran', 'Ramadhan'],
                 'is_featured' => false,
-                'requirements' => 'Membawa Al-Quran sendiri',
             ],
             [
-                'title' => 'Khataman Al-Quran 30 Juz Berjamaah',
+                'title' => 'Nuzulul Quran 17 Ramadhan 1436 H',
                 'category' => 'Tilawah Al-Quran',
-                'description' => 'Acara khataman Al-Quran 30 juz dibaca secara bergantian oleh jamaah',
-                'location' => 'Masjid Istiqlal, Jakarta Pusat',
-                'start_datetime' => $ramadhanStart->copy()->addDays(28)->setTime(8, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(28)->setTime(12, 0),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(27),
-                'max_participants' => 300,
+                'description' => 'Peringatan Nuzulul Quran dengan khataman dan kajian spesial',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => $ramadhanStart->copy()->addDays(16)->setTime(6, 0),
+                'end_datetime' => $ramadhanStart->copy()->addDays(16)->setTime(17, 0),
                 'is_free' => true,
-                'tags' => ['Tilawah', 'Khataman', 'Al-Quran', 'Berjamaah'],
+                'tags' => ['Nuzulul Quran', 'Al-Quran', 'Khataman'],
                 'is_featured' => true,
             ],
             [
                 'title' => 'Musabaqah Tilawatil Quran (MTQ) Ramadhan',
                 'category' => 'Tilawah Al-Quran',
                 'description' => 'Lomba tilawah Al-Quran untuk umum dengan berbagai kategori',
-                'location' => 'Gedung Dakwah Muhammadiyah, Jakarta',
-                'start_datetime' => $ramadhanStart->copy()->addDays(15)->setTime(9, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(15)->setTime(17, 0),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(10),
+                'location' => 'Masjid Agung Al Azhar',
+                'start_datetime' => Carbon::parse('2026-06-27')->setTime(8, 0),
+                'end_datetime' => Carbon::parse('2026-06-27')->setTime(17, 0),
+                'registration_end' => Carbon::parse('2026-06-25'),
                 'max_participants' => 100,
                 'is_free' => false,
                 'price' => 50000,
-                'tags' => ['Tilawah', 'Lomba', 'MTQ', 'Al-Quran'],
-                'is_featured' => false,
-            ],
-
-            // Tarawih Berjamaah
-            [
-                'title' => 'Tarawih Berjamaah 8 Rakaat + Witir',
-                'category' => 'Tarawih Berjamaah',
-                'description' => 'Shalat tarawih berjamaah 8 rakaat dilanjutkan witir 3 rakaat',
-                'location' => 'Masjid Al-Barkah, Depok',
-                'start_datetime' => $ramadhanStart->copy()->setTime(20, 0),
-                'end_datetime' => $ramadhanStart->copy()->setTime(21, 30),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => null, // Unlimited
-                'is_free' => true,
-                'tags' => ['Tarawih', 'Shalat', 'Berjamaah', 'Ramadhan'],
-                'is_featured' => false,
-            ],
-            [
-                'title' => 'Tarawih Berjamaah dengan Tadarus Juz 30',
-                'category' => 'Tarawih Berjamaah',
-                'description' => 'Tarawih spesial dengan tadarus Al-Quran juz 30 selama 10 malam terakhir',
-                'location' => 'Masjid Raya Cikarang',
-                'start_datetime' => $ramadhanStart->copy()->addDays(20)->setTime(20, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(29)->setTime(22, 0),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => null,
-                'is_free' => true,
-                'tags' => ['Tarawih', 'Tadarus', 'Al-Quran'],
+                'tags' => ['MTQ', 'Lomba', 'Al-Quran'],
                 'is_featured' => true,
             ],
-
-            // Dzikir & Doa
             [
-                'title' => 'Majelis Dzikir dan Doa Bersama',
-                'category' => 'Dzikir & Doa',
-                'description' => 'Acara dzikir dan doa bersama setiap Jumat malam di bulan Ramadhan',
-                'location' => 'Masjid Al-Furqon, Bogor',
-                'start_datetime' => $ramadhanStart->copy()->next('Friday')->setTime(20, 0),
-                'end_datetime' => $ramadhanStart->copy()->next('Friday')->setTime(22, 0),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => 500,
-                'is_free' => true,
-                'tags' => ['Dzikir', 'Doa', 'Majelis', 'Ramadhan'],
-                'is_featured' => false,
-            ],
-            [
-                'title' => 'Tahajjud dan Witir Berjamaah',
-                'category' => 'Dzikir & Doa',
-                'description' => 'Shalat tahajjud berjamaah di sepertiga malam terakhir',
-                'location' => 'Pesantren Daarut Tauhid, Bandung',
-                'start_datetime' => $ramadhanStart->copy()->addDays(20)->setTime(3, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(29)->setTime(4, 30),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => null,
-                'is_free' => true,
-                'tags' => ['Tahajjud', 'Witir', 'Shalat Malam'],
+                'title' => 'Musabaqah Hifzhil Quran (MHQ) Ramadhan',
+                'category' => 'Tilawah Al-Quran',
+                'description' => 'Lomba hafalan Al-Quran untuk umum',
+                'location' => 'Masjid Agung Al Azhar',
+                'start_datetime' => Carbon::parse('2026-06-28')->setTime(8, 0),
+                'end_datetime' => Carbon::parse('2026-06-28')->setTime(17, 0),
+                'registration_end' => Carbon::parse('2026-06-26'),
+                'max_participants' => 50,
+                'is_free' => false,
+                'price' => 50000,
+                'tags' => ['MHQ', 'Lomba', 'Hafalan'],
                 'is_featured' => true,
             ],
 
             // Buka Puasa Bersama
             [
-                'title' => 'Buka Puasa Bersama 1000 Anak Yatim',
+                'title' => 'Buka Puasa Bersama 2000 Anak Yatim & Dhuafa',
                 'category' => 'Buka Puasa Bersama',
-                'description' => 'Program buka puasa bersama untuk 1000 anak yatim dan dhuafa. Donasi sangat diharapkan.',
-                'location' => 'Lapangan Parkir Mall Cikarang, Bekasi',
-                'start_datetime' => $ramadhanStart->copy()->addDays(14)->setTime(17, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(14)->setTime(19, 30),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(12),
-                'max_participants' => 1200,
+                'description' => 'Program buka puasa bersama untuk 2000 anak yatim dan dhuafa. Donasi sangat diharapkan.',
+                'location' => 'Aula Buya HAMKA, Masjid Agung Al Azhar',
+                'start_datetime' => Carbon::parse('2026-07-11')->setTime(13, 0),
+                'end_datetime' => Carbon::parse('2026-07-11')->setTime(19, 30),
+                'registration_end' => Carbon::parse('2026-07-09'),
+                'max_participants' => 2000,
                 'is_free' => true,
-                'tags' => ['Buka Puasa', 'Anak Yatim', 'Sosial', 'Donasi'],
+                'tags' => ['Buka Puasa', 'Anak Yatim', 'Sosial'],
                 'is_featured' => true,
                 'requirements' => 'Membawa identitas diri',
-                'contact_person' => 'Yayasan Peduli Yatim',
-                'contact_phone' => '081234567899',
-                'contact_email' => 'yatim@ramadhan1447.id',
+                'contact_person' => 'Panitia Ramadhan',
+                'contact_phone' => '021-7278-3683',
+                'contact_email' => 'info@masjidagungalazhar.com',
             ],
             [
-                'title' => 'Iftar On The Road - Berbagi Takjil Gratis',
+                'title' => 'Buka Puasa Harian Gratis',
                 'category' => 'Buka Puasa Bersama',
-                'description' => 'Program berbagi takjil gratis untuk pengendara dan masyarakat sekitar',
-                'location' => 'Simpang Tiga Cikarang, Bekasi',
-                'start_datetime' => $ramadhanStart->copy()->setTime(17, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(29)->setTime(18, 30),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => 50, // Relawan
+                'description' => 'Buka puasa gratis untuk jamaah setiap hari di bulan Ramadhan',
+                'location' => 'Aula Buya HAMKA',
+                'start_datetime' => $ramadhanStart->copy()->setTime(18, 0),
+                'end_datetime' => $ramadhanStart->copy()->addDays(28)->setTime(18, 30),
                 'is_free' => true,
-                'tags' => ['Takjil', 'Buka Puasa', 'Berbagi', 'Relawan'],
+                'tags' => ['Buka Puasa', 'Gratis', 'Harian'],
                 'is_featured' => false,
             ],
 
-            // Sahur On The Road
+            // Buka Puasa di LAPAS
             [
-                'title' => 'Sahur On The Road - Konvoi Motor Subuh',
-                'category' => 'Sahur On The Road',
-                'description' => 'Konvoi motor keliling kota membangunkan sahur dengan takbir dan musik islami',
-                'location' => 'Start: Alun-alun Cikarang',
-                'start_datetime' => $ramadhanStart->copy()->setTime(3, 30),
-                'end_datetime' => $ramadhanStart->copy()->addDays(29)->setTime(4, 30),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->subDays(1),
-                'max_participants' => 100,
+                'title' => 'Buka Puasa Bersama di Lapas Dewasa Tangerang',
+                'category' => 'Kegiatan Sosial',
+                'description' => 'Program berbagi kebahagiaan dengan warga binaan Lapas Dewasa Tangerang',
+                'location' => 'Lapas Dewasa Tangerang',
+                'start_datetime' => Carbon::parse('2026-06-27')->setTime(15, 0),
+                'end_datetime' => Carbon::parse('2026-06-27')->setTime(20, 30),
                 'is_free' => true,
-                'tags' => ['Sahur', 'Konvoi', 'Motor', 'Takbir'],
-                'is_featured' => true,
-                'requirements' => 'Membawa motor sendiri, SIM, dan STNK',
-            ],
-            [
-                'title' => 'Sahur Bareng di Masjid dengan Menu Gratis',
-                'category' => 'Sahur On The Road',
-                'description' => 'Program sahur gratis setiap hari di masjid untuk jamaah dan masyarakat sekitar',
-                'location' => 'Masjid Jami\' Al-Ikhlas, Karawang',
-                'start_datetime' => $ramadhanStart->copy()->setTime(3, 30),
-                'end_datetime' => $ramadhanStart->copy()->addDays(29)->setTime(5, 0),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => null,
-                'is_free' => true,
-                'tags' => ['Sahur', 'Gratis', 'Masjid', 'Berjamaah'],
+                'tags' => ['Buka Puasa', 'Sosial', 'LAPAS'],
                 'is_featured' => false,
+            ],
+
+            // I'tikaf
+            [
+                'title' => 'I\'tikaf 10 Hari Terakhir Ramadhan',
+                'category' => 'Dzikir & Doa',
+                'description' => 'Program i\'tikaf khusus di 10 hari terakhir Ramadhan dengan kajian dari para ulama',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => Carbon::parse('2026-07-07')->setTime(0, 0),
+                'end_datetime' => Carbon::parse('2026-07-15')->setTime(23, 59),
+                'is_free' => true,
+                'tags' => ['Itikaf', 'Ramadhan', 'Lailatul Qadr'],
+                'is_featured' => true,
             ],
 
             // Kegiatan Sosial
             [
-                'title' => 'Bazaar Ramadhan - Pasar Murah Sembako',
+                'title' => 'Bazaar Ramadhan',
                 'category' => 'Kegiatan Sosial',
-                'description' => 'Bazaar sembako murah untuk masyarakat menjelang Idul Fitri',
-                'location' => 'Lapangan Parkir Masjid Agung Cikarang',
-                'start_datetime' => $ramadhanStart->copy()->addDays(25)->setTime(8, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(27)->setTime(17, 0),
-                'registration_start' => now(),
-                'registration_end' => null,
-                'max_participants' => null,
+                'description' => 'Bazaar Ramadhan dengan berbagai menu buka puasa dan kebutuhan Ramadhan',
+                'location' => 'Lingkungan Masjid Agung Al Azhar',
+                'start_datetime' => $ramadhanStart->copy()->setTime(15, 0),
+                'end_datetime' => $ramadhanStart->copy()->addDays(27)->setTime(22, 0),
                 'is_free' => true,
-                'tags' => ['Bazaar', 'Sembako', 'Murah', 'Sosial'],
+                'tags' => ['Bazaar', 'Ramadhan', 'Kuliner'],
+                'is_featured' => false,
+            ],
+
+            // Kajian Khusus (Jumat)
+            [
+                'title' => 'Dialog: Zakat Membuat Ummat Berdaya dan Berkarya',
+                'category' => 'Kajian Ramadhan',
+                'description' => 'Dialog interaktif tentang pemberdayaan umat melalui zakat bersama Harry Rachmad, S.Pd',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => Carbon::parse('2026-06-19')->setTime(13, 0),
+                'end_datetime' => Carbon::parse('2026-06-19')->setTime(14, 30),
+                'is_free' => true,
+                'tags' => ['Zakat', 'Dialog', 'Kajian'],
                 'is_featured' => true,
             ],
             [
-                'title' => 'Santunan Anak Yatim dan Dhuafa',
-                'category' => 'Kegiatan Sosial',
-                'description' => 'Program santunan dan pembagian paket sembako untuk anak yatim dan keluarga dhuafa',
-                'location' => 'Gedung Serbaguna Cikarang',
-                'start_datetime' => $ramadhanStart->copy()->addDays(20)->setTime(9, 0),
-                'end_datetime' => $ramadhanStart->copy()->addDays(20)->setTime(13, 0),
-                'registration_start' => now(),
-                'registration_end' => $ramadhanStart->copy()->addDays(18),
-                'max_participants' => 500,
+                'title' => 'Dialog: Makro Ekonomi Syariah',
+                'category' => 'Kajian Ramadhan',
+                'description' => 'Kajian tentang ekonomi syariah yang sukses memberdayakan umat bersama Ir. H. Adiwarman A. Karim',
+                'location' => 'Ruang Utama Masjid Agung Al Azhar',
+                'start_datetime' => Carbon::parse('2026-06-26')->setTime(13, 0),
+                'end_datetime' => Carbon::parse('2026-06-26')->setTime(14, 30),
                 'is_free' => true,
-                'tags' => ['Santunan', 'Yatim', 'Dhuafa', 'Sosial'],
-                'is_featured' => false,
+                'tags' => ['Ekonomi Syariah', 'Dialog', 'Kajian'],
+                'is_featured' => true,
             ],
         ];
 
+        $createdCount = 0;
         foreach ($events as $eventData) {
-            // Get category
             $category = $categories->firstWhere('name', $eventData['category']);
-            
+
             if (!$category) {
-                $this->command->warn("Category '{$eventData['category']}' not found, skipping event: {$eventData['title']}");
+                $this->command->warn("Category '{$eventData['category']}' not found");
                 continue;
             }
 
-            // Create event
             $event = Event::create([
                 'title' => $eventData['title'],
                 'slug' => Str::slug($eventData['title']),
@@ -303,49 +216,70 @@ class EventSeeder extends Seeder
                 'end_datetime' => $eventData['end_datetime'],
                 'timezone' => 'Asia/Jakarta',
                 'is_registration_open' => true,
-                'registration_start' => $eventData['registration_start'],
-                'registration_end' => $eventData['registration_end'],
-                'max_participants' => $eventData['max_participants'],
-                'current_participants' => rand(0, min($eventData['max_participants'] ?? 50, 30)),
+                'registration_start' => now(),
+                'registration_end' => $eventData['registration_end'] ?? null,
+                'max_participants' => $eventData['max_participants'] ?? null,
+                'current_participants' => 0,
                 'is_free' => $eventData['is_free'],
                 'price' => $eventData['price'] ?? null,
                 'requirements' => $eventData['requirements'] ?? null,
-                'contact_person' => $eventData['contact_person'] ?? 'Panitia Acara',
-                'contact_phone' => $eventData['contact_phone'] ?? '081234567890',
-                'contact_email' => $eventData['contact_email'] ?? 'info@ramadhan1447.id',
+                'contact_person' => $eventData['contact_person'] ?? 'Panitia Masjid',
+                'contact_phone' => $eventData['contact_phone'] ?? '021-7278-3683',
+                'contact_email' => $eventData['contact_email'] ?? 'info@masjidagungalazhar.com',
                 'status' => Event::STATUS_PUBLISHED,
                 'is_featured' => $eventData['is_featured'],
             ]);
 
-            // Attach tags
             $eventTags = [];
             foreach ($eventData['tags'] as $tagName) {
                 $tag = $tags->firstWhere('name', $tagName);
-                if ($tag) {
-                    $eventTags[] = $tag->id;
-                }
+                if ($tag) $eventTags[] = $tag->id;
             }
             $event->tags()->attach($eventTags);
 
-            $this->command->info("✓ Created event: {$event->title}");
+            $this->command->info("✓ Created: {$event->title}");
+            $createdCount++;
         }
 
-        $this->command->info('✅ Event seeding completed!');
+        $this->command->info("✅ Event seeding completed! Created {$createdCount} events");
     }
 
-    /**
-     * Create tags
-     */
     private function createTags()
     {
         $tagNames = [
-            'Ramadhan', 'Kajian', 'Tafsir', 'Al-Quran', 'Fiqih', 'Puasa', 'Zakat',
-            'Tilawah', 'Tahsin', 'Khataman', 'Lomba', 'MTQ', 'Tarawih', 'Shalat',
-            'Berjamaah', 'Tadarus', 'Dzikir', 'Doa', 'Majelis', 'Tahajjud', 'Witir',
-            'Shalat Malam', 'Buka Puasa', 'Anak Yatim', 'Sosial', 'Donasi', 'Takjil',
-            'Berbagi', 'Relawan', 'Sahur', 'Konvoi', 'Motor', 'Takbir', 'Gratis',
-            'Masjid', 'Bazaar', 'Sembako', 'Murah', 'Santunan', 'Dhuafa', 'Pelatihan',
-            'Lailatul Qadr', 'Ibadah'
+            'Ramadhan',
+            'Kajian',
+            'Al-Quran',
+            'Tarawih',
+            'Ceramah',
+            'Tadarus',
+            'Tilawah',
+            'MTQ',
+            'MHQ',
+            'Lomba',
+            'Hafalan',
+            'Nuzulul Quran',
+            'Khataman',
+            'Buka Puasa',
+            'Anak Yatim',
+            'Sosial',
+            'Gratis',
+            'Harian',
+            'LAPAS',
+            'Konvoi',
+            'Sahur',
+            'Takbir',
+            'Itikaf',
+            'Lailatul Qadr',
+            'Dzikir',
+            'Doa',
+            'Bazaar',
+            'Kuliner',
+            'Zakat',
+            'Dialog',
+            'Ekonomi Syariah',
+            'Kuliah Subuh',
+            'Taushiyah'
         ];
 
         $tags = collect();
@@ -356,52 +290,30 @@ class EventSeeder extends Seeder
             );
             $tags->push($tag);
         }
-
         return $tags;
     }
 
-    /**
-     * Generate full description for event
-     */
     private function generateFullDescription($eventData)
     {
         $description = "<h2>Tentang Event</h2>\n";
         $description .= "<p>{$eventData['description']}</p>\n\n";
-        
+
         $description .= "<h3>Detail Acara</h3>\n";
         $description .= "<ul>\n";
         $description .= "<li><strong>Lokasi:</strong> {$eventData['location']}</li>\n";
         $description .= "<li><strong>Waktu:</strong> " . $eventData['start_datetime']->format('d F Y, H:i') . " WIB</li>\n";
         $description .= "<li><strong>Biaya:</strong> " . ($eventData['is_free'] ? 'GRATIS' : 'Rp ' . number_format($eventData['price'] ?? 0, 0, ',', '.')) . "</li>\n";
-        
+
         if (isset($eventData['max_participants']) && $eventData['max_participants']) {
-            $description .= "<li><strong>Kuota Peserta:</strong> {$eventData['max_participants']} orang</li>\n";
-        } else {
-            $description .= "<li><strong>Kuota Peserta:</strong> Tidak Terbatas</li>\n";
+            $description .= "<li><strong>Kuota:</strong> {$eventData['max_participants']} orang</li>\n";
         }
-        
-        $description .= "</ul>\n\n";
+
+        $description .= "</ul>\n";
 
         if (isset($eventData['requirements'])) {
             $description .= "<h3>Persyaratan</h3>\n";
-            $description .= "<p>{$eventData['requirements']}</p>\n\n";
+            $description .= "<p>{$eventData['requirements']}</p>\n";
         }
-
-        $description .= "<h3>Fasilitas</h3>\n";
-        $description .= "<ul>\n";
-        $description .= "<li>Sertifikat (jika tersedia)</li>\n";
-        $description .= "<li>Snack dan minuman</li>\n";
-        $description .= "<li>Materi event</li>\n";
-        $description .= "<li>Doorprize (jika ada)</li>\n";
-        $description .= "</ul>\n\n";
-
-        $description .= "<h3>Kontak Informasi</h3>\n";
-        $description .= "<p>Untuk informasi lebih lanjut, silakan hubungi:</p>\n";
-        $description .= "<ul>\n";
-        $description .= "<li><strong>Contact Person:</strong> " . ($eventData['contact_person'] ?? 'Panitia Acara') . "</li>\n";
-        $description .= "<li><strong>WhatsApp:</strong> " . ($eventData['contact_phone'] ?? '081234567890') . "</li>\n";
-        $description .= "<li><strong>Email:</strong> " . ($eventData['contact_email'] ?? 'info@ramadhan1447.id') . "</li>\n";
-        $description .= "</ul>\n";
 
         return $description;
     }

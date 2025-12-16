@@ -436,6 +436,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/expenses/{expense}/receipt', [ExpenseController::class, 'uploadReceipt'])->name('expenses.receipt');
     Route::post('/expenses/bulk-approve', [ExpenseController::class, 'bulkApprove'])->name('expenses.bulk-approve');
     Route::get('/expenses/export', [ExpenseController::class, 'export'])->name('expenses.export');
+    
 
     // Cash Flow
     Route::prefix('cash-flow')->name('cash-flow.')->group(function () {

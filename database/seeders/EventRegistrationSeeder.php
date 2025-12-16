@@ -11,14 +11,10 @@ use Faker\Factory as Faker;
 
 class EventRegistrationSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $faker = Faker::create('id_ID');
 
-        // Get all published events
         $events = Event::published()->get();
 
         if ($events->isEmpty()) {
@@ -26,9 +22,7 @@ class EventRegistrationSeeder extends Seeder
             return;
         }
 
-        // Get users
         $users = User::all();
-
         $totalRegistrations = 0;
 
         foreach ($events as $event) {
@@ -37,7 +31,7 @@ class EventRegistrationSeeder extends Seeder
                 continue;
             }
 
-            // Generate random number of registrations (30-80% of max or random number)
+            // Generate random number of registrations
             $maxReg = $event->max_participants
                 ? min($event->max_participants, rand(5, (int)($event->max_participants * 0.8)))
                 : rand(10, 50);
@@ -45,12 +39,11 @@ class EventRegistrationSeeder extends Seeder
             $createdCount = 0;
 
             for ($i = 0; $i < $maxReg; $i++) {
-                // Random user or guest registration
                 $user = $users->random();
-                $isGuest = rand(0, 100) < 30; // 30% chance guest registration
+                $isGuest = rand(0, 100) < 30; // 30% guest registration
 
                 $registration = EventRegistration::create([
-                    'registration_code' => $this->generateUniqueCode(), // ← FIXED: Generate manually
+                    'registration_code' => $this->generateUniqueCode(),
                     'event_id' => $event->id,
                     'user_id' => $isGuest ? null : $user->id,
                     'name' => $isGuest ? $faker->name : $user->name,
@@ -76,32 +69,22 @@ class EventRegistrationSeeder extends Seeder
                 $totalRegistrations++;
             }
 
-            // Update event current_participants
-            $event->update([
-                'current_participants' => $createdCount
-            ]);
-
-            $this->command->info("✓ Created {$createdCount} registrations for event: {$event->title}");
+            $event->update(['current_participants' => $createdCount]);
+            $this->command->info("✓ Created {$createdCount} registrations for: {$event->title}");
         }
 
-        $this->command->info("✅ Event registration seeding completed! Total: {$totalRegistrations} registrations");
+        $this->command->info("✅ Total registrations created: {$totalRegistrations}");
     }
 
-    /**
-     * Generate unique registration code
-     */
     private function generateUniqueCode(): string
     {
         do {
-            $code = 'REG-RMB-' . date('Y') . '-' . strtoupper(Str::random(4));
+            $code = 'REG-' . date('Y') . '-' . strtoupper(Str::random(6));
         } while (EventRegistration::where('registration_code', $code)->exists());
 
         return $code;
     }
 
-    /**
-     * Generate random status
-     */
     private function randomStatus()
     {
         $statuses = [
@@ -125,9 +108,6 @@ class EventRegistrationSeeder extends Seeder
         return EventRegistration::STATUS_CONFIRMED;
     }
 
-    /**
-     * Generate random payment status
-     */
     private function randomPaymentStatus()
     {
         $statuses = [
@@ -149,27 +129,56 @@ class EventRegistrationSeeder extends Seeder
         return EventRegistration::PAYMENT_PAID;
     }
 
-    /**
-     * Generate custom data based on event
-     */
     private function generateCustomData($event, $faker)
     {
         $customData = [];
 
-        // Add some custom fields based on event category
-        if (str_contains(strtolower($event->title), 'kajian') || str_contains(strtolower($event->title), 'pelatihan')) {
-            $customData['pendidikan_terakhir'] = $faker->randomElement(['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3']);
+        // Untuk kajian dan pelatihan
+        if (
+            str_contains(strtolower($event->title), 'kajian') ||
+            str_contains(strtolower($event->title), 'dialog') ||
+            str_contains(strtolower($event->title), 'kuliah')
+        ) {
+            $customData['pendidikan_terakhir'] = $faker->randomElement(['SMA', 'D3', 'S1', 'S2', 'S3']);
             $customData['pekerjaan'] = $faker->jobTitle;
         }
 
-        if (str_contains(strtolower($event->title), 'yatim') || str_contains(strtolower($event->title), 'sosial')) {
-            $customData['jumlah_tanggungan'] = rand(0, 5);
-            $customData['status_ekonomi'] = $faker->randomElement(['Mampu', 'Kurang Mampu', 'Tidak Mampu']);
+        // Untuk anak yatim
+        if (
+            str_contains(strtolower($event->title), 'yatim') ||
+            str_contains(strtolower($event->title), 'dhuafa')
+        ) {
+            $customData['status_yatim'] = $faker->randomElement(['Yatim', 'Piatu', 'Yatim Piatu', 'Dhuafa']);
+            $customData['nama_wali'] = $faker->name;
         }
 
-        if (str_contains(strtolower($event->title), 'lomba') || str_contains(strtolower($event->title), 'mtq')) {
+        // Untuk lomba MTQ/MHQ
+        if (
+            str_contains(strtolower($event->title), 'mtq') ||
+            str_contains(strtolower($event->title), 'mhq') ||
+            str_contains(strtolower($event->title), 'lomba')
+        ) {
             $customData['kategori_lomba'] = $faker->randomElement(['Anak-anak', 'Remaja', 'Dewasa']);
             $customData['pengalaman_lomba'] = $faker->randomElement(['Pemula', 'Berpengalaman', 'Profesional']);
+        }
+
+        // Untuk sahur on the road (konvoi)
+        if (
+            str_contains(strtolower($event->title), 'konvoi') ||
+            str_contains(strtolower($event->title), 'sahur on the road')
+        ) {
+            $customData['jenis_kendaraan'] = $faker->randomElement(['Honda Beat', 'Honda Vario', 'Yamaha Mio', 'Suzuki Nex']);
+            $customData['no_polisi'] = $faker->regexify('[A-Z]{1}[0-9]{4}[A-Z]{2,3}');
+            $customData['no_sim'] = $faker->numerify('############');
+        }
+
+        // Untuk i'tikaf
+        if (
+            str_contains(strtolower($event->title), 'itikaf') ||
+            str_contains(strtolower($event->title), 'i\'tikaf')
+        ) {
+            $customData['durasi_itikaf'] = $faker->randomElement(['3 hari', '5 hari', '10 hari']);
+            $customData['kebutuhan_khusus'] = $faker->optional(0.3)->sentence;
         }
 
         return empty($customData) ? null : $customData;

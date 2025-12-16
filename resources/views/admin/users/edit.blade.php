@@ -49,7 +49,8 @@
 
         {{-- Form --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-            <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data"
+                x-data="userForm()">
                 @csrf
                 @method('PUT')
 
@@ -177,7 +178,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Role <span class="text-red-500">*</span>
                             </label>
-                            <select name="role" required
+                            <select name="role" x-model="selectedRole" required
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('role') border-red-500 @enderror">
                                 @foreach ($roles as $value => $label)
                                     <option value="{{ $value }}"
@@ -211,6 +212,84 @@
                         </div>
                     </div>
 
+                    {{-- Conditional Fields Based on Role --}}
+                    <div x-show="showPositionFields()" x-transition class="space-y-6">
+                        {{-- Info Alert --}}
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div class="flex-1">
+                                    <h3 class="text-sm font-semibold text-blue-900 mb-1">Informasi Tambahan</h3>
+                                    <p class="text-sm text-blue-800">
+                                        Isi field di bawah sesuai dengan role yang dipilih.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Position (for Pelaksana) --}}
+                        <div x-show="selectedRole === 'pelaksana'">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Jabatan (Pelaksana)
+                            </label>
+                            <select name="position"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('position') border-red-500 @enderror">
+                                <option value="">Pilih Jabatan</option>
+                                <option value="Ketua"
+                                    {{ old('position', $user->position) == 'Ketua' ? 'selected' : '' }}>Ketua</option>
+                                <option value="Sekretaris"
+                                    {{ old('position', $user->position) == 'Sekretaris' ? 'selected' : '' }}>Sekretaris
+                                </option>
+                                <option value="Bendahara"
+                                    {{ old('position', $user->position) == 'Bendahara' ? 'selected' : '' }}>Bendahara
+                                </option>
+                            </select>
+                            @error('position')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Unit (for Koordinator) --}}
+                        <div x-show="selectedRole === 'koordinator'">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Unit Koordinasi
+                            </label>
+                            <input type="text" name="unit" value="{{ old('unit', $user->unit) }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('unit') border-red-500 @enderror"
+                                placeholder="Contoh: TK Islam Al Azhar 1">
+                            @error('unit')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Seksi & Is Coordinator (for Panitia) --}}
+                        <div x-show="selectedRole === 'panitia'" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Seksi Kegiatan
+                                </label>
+                                <input type="text" name="seksi" value="{{ old('seksi', $user->seksi) }}"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('seksi') border-red-500 @enderror"
+                                    placeholder="Contoh: Perlengkapan dan Kebersihan">
+                                @error('seksi')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" name="is_coordinator" id="is_coordinator" value="1"
+                                    {{ old('is_coordinator', $user->is_coordinator) ? 'checked' : '' }}
+                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                <label for="is_coordinator" class="ml-2 text-sm text-gray-700">
+                                    Koordinator Seksi
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- Bio --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -222,6 +301,64 @@
                         @error('bio')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    {{-- Address Section (Optional) --}}
+                    <div class="border-t pt-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Alamat (Opsional)</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Alamat Lengkap
+                                </label>
+                                <textarea name="address" rows="3"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('address') border-red-500 @enderror"
+                                    placeholder="Jl. Contoh No. 123">{{ old('address', $user->address) }}</textarea>
+                                @error('address')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Kota/Kabupaten
+                                    </label>
+                                    <input type="text" name="city" value="{{ old('city', $user->city) }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('city') border-red-500 @enderror"
+                                        placeholder="Jakarta Selatan">
+                                    @error('city')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Provinsi
+                                    </label>
+                                    <input type="text" name="province" value="{{ old('province', $user->province) }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('province') border-red-500 @enderror"
+                                        placeholder="DKI Jakarta">
+                                    @error('province')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Kode Pos
+                                    </label>
+                                    <input type="text" name="postal_code"
+                                        value="{{ old('postal_code', $user->postal_code) }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary @error('postal_code') border-red-500 @enderror"
+                                        placeholder="12110">
+                                    @error('postal_code')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- User Info --}}
@@ -278,15 +415,10 @@
                         <p class="text-sm text-gray-600 mb-4">
                             Tindakan ini tidak dapat dibatalkan. User dan semua data terkait akan dihapus permanen.
                         </p>
-                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan!');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                                Hapus User
-                            </button>
-                        </form>
+                        <button onclick="deleteUser({{ $user->id }}, '{{ $user->name }}')"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                            Hapus User
+                        </button>
                     </div>
                 </div>
             </div>
@@ -304,6 +436,44 @@
                     document.getElementById('avatar-preview').src = e.target.result;
                 }
                 reader.readAsDataURL(file);
+            }
+        }
+
+        function userForm() {
+            return {
+                selectedRole: '{{ old('role', $user->role) }}',
+
+                showPositionFields() {
+                    return ['pelaksana', 'koordinator', 'panitia'].includes(this.selectedRole);
+                }
+            }
+        }
+
+        async function deleteUser(id, name) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus user "${name}"?\n\nTindakan ini tidak dapat dibatalkan!`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/users/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('✓ User berhasil dihapus');
+                    window.location.href = '{{ route('admin.users.index') }}';
+                } else {
+                    alert('✗ ' + (data.message || 'Gagal menghapus user'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('✗ Terjadi kesalahan saat menghapus user');
             }
         }
     </script>

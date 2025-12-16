@@ -22,8 +22,11 @@ class UserController extends Controller
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', "%{$request->search}%")
-                  ->orWhere('email', 'like', "%{$request->search}%")
-                  ->orWhere('phone', 'like', "%{$request->search}%");
+                    ->orWhere('email', 'like', "%{$request->search}%")
+                    ->orWhere('phone', 'like', "%{$request->search}%")
+                    ->orWhere('position', 'like', "%{$request->search}%")
+                    ->orWhere('unit', 'like', "%{$request->search}%")
+                    ->orWhere('seksi', 'like', "%{$request->search}%");
             });
         }
 
@@ -43,6 +46,10 @@ class UserController extends Controller
         $stats = [
             'total' => User::count(),
             'admin' => User::admins()->count(),
+            'penasehat' => User::penasehat()->count(),
+            'pengarah' => User::pengarah()->count(),
+            'pelaksana' => User::pelaksana()->count(),
+            'koordinator' => User::koordinator()->count(),
             'panitia' => User::panitia()->count(),
             'jamaah' => User::jamaah()->count(),
             'active' => User::active()->count(),
@@ -58,7 +65,11 @@ class UserController extends Controller
     {
         $roles = [
             User::ROLE_ADMIN => 'Admin',
-            User::ROLE_PANITIA => 'Panitia',
+            User::ROLE_PENASEHAT => 'Penasehat',
+            User::ROLE_PENGARAH => 'Pengarah (SC)',
+            User::ROLE_PELAKSANA => 'Pelaksana (OC)',
+            User::ROLE_KOORDINATOR => 'Koordinator Unit',
+            User::ROLE_PANITIA => 'Panitia Seksi',
             User::ROLE_JAMAAH => 'Jamaah',
         ];
 
@@ -92,7 +103,6 @@ class UserController extends Controller
             return redirect()
                 ->route('admin.users.index')
                 ->with('success', 'User berhasil dibuat.');
-
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -108,7 +118,11 @@ class UserController extends Controller
     {
         $roles = [
             User::ROLE_ADMIN => 'Admin',
-            User::ROLE_PANITIA => 'Panitia',
+            User::ROLE_PENASEHAT => 'Penasehat',
+            User::ROLE_PENGARAH => 'Pengarah (SC)',
+            User::ROLE_PELAKSANA => 'Pelaksana (OC)',
+            User::ROLE_KOORDINATOR => 'Koordinator Unit',
+            User::ROLE_PANITIA => 'Panitia Seksi',
             User::ROLE_JAMAAH => 'Jamaah',
         ];
 
@@ -151,7 +165,6 @@ class UserController extends Controller
             return redirect()
                 ->route('admin.users.index')
                 ->with('success', 'User berhasil diupdate.');
-
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -167,9 +180,10 @@ class UserController extends Controller
     {
         // Prevent deletion of own account
         if ($user->id === auth()->id()) {
-            return redirect()
-                ->back()
-                ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak dapat menghapus akun sendiri.'
+            ], 403);
         }
 
         try {
@@ -180,14 +194,15 @@ class UserController extends Controller
 
             $user->delete();
 
-            return redirect()
-                ->route('admin.users.index')
-                ->with('success', 'User berhasil dihapus.');
-
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil dihapus.'
+            ]);
         } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
     }
 
@@ -197,8 +212,8 @@ class UserController extends Controller
     public function toggleStatus(User $user)
     {
         try {
-            $newStatus = $user->status === User::STATUS_ACTIVE 
-                ? User::STATUS_INACTIVE 
+            $newStatus = $user->status === User::STATUS_ACTIVE
+                ? User::STATUS_INACTIVE
                 : User::STATUS_ACTIVE;
 
             $user->update(['status' => $newStatus]);

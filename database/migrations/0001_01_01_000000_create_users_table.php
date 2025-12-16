@@ -22,8 +22,23 @@ return new class extends Migration
             $table->string('password');
             
             // Role & Status
-            $table->enum('role', ['admin', 'panitia', 'jamaah'])->default('jamaah');
+            $table->enum('role', [
+                'admin',           // Super admin & admin team
+                'penasehat',       // Penasehat
+                'pengarah',        // Panitia Pengarah (SC)
+                'pelaksana',       // Panitia Pelaksana (OC) - Ketua, Sekretaris, Bendahara
+                'koordinator',     // Anggota Unit Koordinasi
+                'panitia',         // Seksi-seksi kegiatan
+                'jamaah'           // Public users
+            ])->default('jamaah');
+            
             $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            
+            // Additional Fields for Panitia Structure
+            $table->string('position')->nullable(); // Ketua, Sekretaris, Bendahara, dll
+            $table->string('unit')->nullable();     // Unit koordinasi (TK, SD, SMP, UAI, dll)
+            $table->string('seksi')->nullable();    // Nama seksi kegiatan
+            $table->boolean('is_coordinator')->default(false); // Koordinator seksi atau bukan
             
             // Profile
             $table->string('avatar')->nullable();
@@ -43,6 +58,9 @@ return new class extends Migration
             $table->index('email');
             $table->index('role');
             $table->index('status');
+            $table->index('position');
+            $table->index('unit');
+            $table->index('seksi');
         });
 
         // Create password reset tokens table

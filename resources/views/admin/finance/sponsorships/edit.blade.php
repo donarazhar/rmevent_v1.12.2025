@@ -47,7 +47,7 @@
                             @foreach ($events as $event)
                                 <option value="{{ $event->id }}"
                                     {{ old('event_id', $sponsorship->event_id) == $event->id ? 'selected' : '' }}>
-                                    {{ $event->name }}
+                                    {{ $event->title }}
                                 </option>
                             @endforeach
                         </select>

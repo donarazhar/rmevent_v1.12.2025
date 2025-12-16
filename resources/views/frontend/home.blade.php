@@ -1503,4 +1503,5 @@
             });
         </script>
     @endpush
+    
 @endsection

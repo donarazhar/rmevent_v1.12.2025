@@ -22,6 +22,15 @@ class User extends Authenticatable
         'status',
         'avatar',
         'email_verified_at',
+        'position',        // Jabatan: Ketua, Sekretaris, Bendahara
+        'unit',            // Unit koordinasi
+        'seksi',           // Nama seksi kegiatan
+        'is_coordinator',  // Koordinator seksi atau tidak
+        'bio',
+        'address',
+        'city',
+        'province',
+        'postal_code',
     ];
 
     /**
@@ -40,6 +49,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_coordinator' => 'boolean',
         ];
     }
 
@@ -47,6 +57,10 @@ class User extends Authenticatable
      * Role Constants
      */
     const ROLE_ADMIN = 'admin';
+    const ROLE_PENASEHAT = 'penasehat';
+    const ROLE_PENGARAH = 'pengarah';
+    const ROLE_PELAKSANA = 'pelaksana';
+    const ROLE_KOORDINATOR = 'koordinator';
     const ROLE_PANITIA = 'panitia';
     const ROLE_JAMAAH = 'jamaah';
 
@@ -60,7 +74,7 @@ class User extends Authenticatable
     /**
      * Relationships
      */
-    
+
     // Posts authored by this user
     public function posts()
     {
@@ -88,11 +102,31 @@ class User extends Authenticatable
     /**
      * Scopes
      */
-    
+
     // Filter by role
     public function scopeAdmins($query)
     {
         return $query->where('role', self::ROLE_ADMIN);
+    }
+
+    public function scopePenasehat($query)
+    {
+        return $query->where('role', self::ROLE_PENASEHAT);
+    }
+
+    public function scopePengarah($query)
+    {
+        return $query->where('role', self::ROLE_PENGARAH);
+    }
+
+    public function scopePelaksana($query)
+    {
+        return $query->where('role', self::ROLE_PELAKSANA);
+    }
+
+    public function scopeKoordinator($query)
+    {
+        return $query->where('role', self::ROLE_KOORDINATOR);
     }
 
     public function scopePanitia($query)
@@ -124,11 +158,35 @@ class User extends Authenticatable
     /**
      * Helper Methods
      */
-    
+
     // Check if user is admin
     public function isAdmin()
     {
         return $this->role === self::ROLE_ADMIN;
+    }
+
+    // Check if user is penasehat
+    public function isPenasehat()
+    {
+        return $this->role === self::ROLE_PENASEHAT;
+    }
+
+    // Check if user is pengarah
+    public function isPengarah()
+    {
+        return $this->role === self::ROLE_PENGARAH;
+    }
+
+    // Check if user is pelaksana
+    public function isPelaksana()
+    {
+        return $this->role === self::ROLE_PELAKSANA;
+    }
+
+    // Check if user is koordinator
+    public function isKoordinator()
+    {
+        return $this->role === self::ROLE_KOORDINATOR;
     }
 
     // Check if user is panitia
@@ -163,13 +221,55 @@ class User extends Authenticatable
     // Get display name with role
     public function getDisplayNameAttribute()
     {
-        $roleBadge = match($this->role) {
+        $roleBadge = match ($this->role) {
             self::ROLE_ADMIN => '👨‍💼',
-            self::ROLE_PANITIA => '🎯',
+            self::ROLE_PENASEHAT => '🎓',
+            self::ROLE_PENGARAH => '👔',
+            self::ROLE_PELAKSANA => '⭐',
+            self::ROLE_KOORDINATOR => '🎯',
+            self::ROLE_PANITIA => '👥',
             self::ROLE_JAMAAH => '🕌',
             default => ''
         };
 
         return $roleBadge . ' ' . $this->name;
+    }
+
+    // Get role label
+    public function getRoleLabelAttribute()
+    {
+        return match ($this->role) {
+            self::ROLE_ADMIN => 'Admin',
+            self::ROLE_PENASEHAT => 'Penasehat',
+            self::ROLE_PENGARAH => 'Pengarah (SC)',
+            self::ROLE_PELAKSANA => 'Pelaksana (OC)',
+            self::ROLE_KOORDINATOR => 'Koordinator Unit',
+            self::ROLE_PANITIA => 'Panitia Seksi',
+            self::ROLE_JAMAAH => 'Jamaah',
+            default => 'Unknown'
+        };
+    }
+
+    // Get full position info
+    public function getFullPositionAttribute()
+    {
+        $parts = [];
+
+        if ($this->position) {
+            $parts[] = $this->position;
+        }
+
+        if ($this->unit) {
+            $parts[] = $this->unit;
+        }
+
+        if ($this->seksi) {
+            $parts[] = $this->seksi;
+            if ($this->is_coordinator) {
+                $parts[] = '(Koordinator)';
+            }
+        }
+
+        return !empty($parts) ? implode(' - ', $parts) : null;
     }
 }

@@ -33,6 +33,31 @@
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    // Tambahkan ini untuk scale 80%
+                    screens: {
+                        '2xl': '1536px',
+                    },
+                    maxWidth: {
+                        '8xl': '90rem', // Default container
+                    }
+                },
+                // Override container defaults
+                container: {
+                    center: true,
+                    padding: {
+                        DEFAULT: '1rem',
+                        sm: '2rem',
+                        lg: '4rem',
+                        xl: '5rem',
+                        '2xl': '6rem',
+                    },
+                    screens: {
+                        sm: '640px',
+                        md: '768px',
+                        lg: '1024px',
+                        xl: '1024px', // 80% dari 1280px
+                        '2xl': '1229px', // 80% dari 1536px
                     }
                 }
             }

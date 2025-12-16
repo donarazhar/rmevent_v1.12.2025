@@ -1,5 +1,3 @@
-{{-- resources/views/admin/users/index.blade.php --}}
-
 @extends('admin.layouts.app')
 
 @section('title', 'Manajemen Users')
@@ -24,71 +22,45 @@
         </div>
 
         {{-- Statistics Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Total Users</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                    </div>
-                </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Total</p>
+                <p class="text-xl font-bold text-gray-900">{{ $stats['total'] }}</p>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Admin</p>
-                        <p class="text-2xl font-bold text-purple-600">{{ $stats['admin'] }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                        <span class="text-2xl">👨‍💼</span>
-                    </div>
-                </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Admin</p>
+                <p class="text-xl font-bold text-purple-600">{{ $stats['admin'] }}</p>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Panitia</p>
-                        <p class="text-2xl font-bold text-indigo-600">{{ $stats['panitia'] }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
-                        <span class="text-2xl">🎯</span>
-                    </div>
-                </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Penasehat</p>
+                <p class="text-xl font-bold text-blue-600">{{ $stats['penasehat'] }}</p>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Jamaah</p>
-                        <p class="text-2xl font-bold text-green-600">{{ $stats['jamaah'] }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                        <span class="text-2xl">🕌</span>
-                    </div>
-                </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Pengarah</p>
+                <p class="text-xl font-bold text-cyan-600">{{ $stats['pengarah'] }}</p>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Active</p>
-                        <p class="text-2xl font-bold text-emerald-600">{{ $stats['active'] }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Pelaksana</p>
+                <p class="text-xl font-bold text-amber-600">{{ $stats['pelaksana'] }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Koordinator</p>
+                <p class="text-xl font-bold text-orange-600">{{ $stats['koordinator'] }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Panitia</p>
+                <p class="text-xl font-bold text-indigo-600">{{ $stats['panitia'] }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <p class="text-xs text-gray-600 mb-1">Jamaah</p>
+                <p class="text-xl font-bold text-green-600">{{ $stats['jamaah'] }}</p>
             </div>
         </div>
 
@@ -97,7 +69,7 @@
             <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-4">
                 <div class="flex-1">
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Cari nama, email, atau telepon..."
+                        placeholder="Cari nama, email, telepon, jabatan, unit, atau seksi..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                 </div>
                 <div class="w-full sm:w-48">
@@ -105,6 +77,11 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
                         <option value="">Semua Role</option>
                         <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="penasehat" {{ request('role') == 'penasehat' ? 'selected' : '' }}>Penasehat</option>
+                        <option value="pengarah" {{ request('role') == 'pengarah' ? 'selected' : '' }}>Pengarah</option>
+                        <option value="pelaksana" {{ request('role') == 'pelaksana' ? 'selected' : '' }}>Pelaksana</option>
+                        <option value="koordinator" {{ request('role') == 'koordinator' ? 'selected' : '' }}>Koordinator
+                        </option>
                         <option value="panitia" {{ request('role') == 'panitia' ? 'selected' : '' }}>Panitia</option>
                         <option value="jamaah" {{ request('role') == 'jamaah' ? 'selected' : '' }}>Jamaah</option>
                     </select>
@@ -140,12 +117,12 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
-                            </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Telepon</th>
+                                Contact</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role
                             </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Jabatan/Unit/Seksi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -157,7 +134,7 @@
                     <tbody class="divide-y divide-gray-200">
                         @forelse($users as $user)
                             <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}"
                                             class="w-10 h-10 rounded-full">
@@ -169,27 +146,76 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900">{{ $user->email }}</div>
+                                    <div class="text-xs text-gray-500">{{ $user->phone ?? '-' }}</div>
                                     @if ($user->email_verified_at)
                                         <span class="text-xs text-green-600">✓ Verified</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $user->phone ?? '-' }}
-                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if ($user->role === 'admin')
-                                        <span
-                                            class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded">👨‍💼
-                                            Admin</span>
-                                    @elseif($user->role === 'panitia')
-                                        <span
-                                            class="px-2 py-1 text-xs font-medium bg-indigo-100 text-indigo-700 rounded">🎯
-                                            Panitia</span>
+                                    @php
+                                        $roleConfig = match ($user->role) {
+                                            'admin' => [
+                                                'bg' => 'bg-purple-100',
+                                                'text' => 'text-purple-700',
+                                                'icon' => '👨‍💼',
+                                                'label' => 'Admin',
+                                            ],
+                                            'penasehat' => [
+                                                'bg' => 'bg-blue-100',
+                                                'text' => 'text-blue-700',
+                                                'icon' => '🎓',
+                                                'label' => 'Penasehat',
+                                            ],
+                                            'pengarah' => [
+                                                'bg' => 'bg-cyan-100',
+                                                'text' => 'text-cyan-700',
+                                                'icon' => '👔',
+                                                'label' => 'Pengarah',
+                                            ],
+                                            'pelaksana' => [
+                                                'bg' => 'bg-amber-100',
+                                                'text' => 'text-amber-700',
+                                                'icon' => '⭐',
+                                                'label' => 'Pelaksana',
+                                            ],
+                                            'koordinator' => [
+                                                'bg' => 'bg-orange-100',
+                                                'text' => 'text-orange-700',
+                                                'icon' => '🎯',
+                                                'label' => 'Koordinator',
+                                            ],
+                                            'panitia' => [
+                                                'bg' => 'bg-indigo-100',
+                                                'text' => 'text-indigo-700',
+                                                'icon' => '👥',
+                                                'label' => 'Panitia',
+                                            ],
+                                            'jamaah' => [
+                                                'bg' => 'bg-green-100',
+                                                'text' => 'text-green-700',
+                                                'icon' => '🕌',
+                                                'label' => 'Jamaah',
+                                            ],
+                                            default => [
+                                                'bg' => 'bg-gray-100',
+                                                'text' => 'text-gray-700',
+                                                'icon' => '❓',
+                                                'label' => 'Unknown',
+                                            ],
+                                        };
+                                    @endphp
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium {{ $roleConfig['bg'] }} {{ $roleConfig['text'] }} rounded">
+                                        {{ $roleConfig['icon'] }} {{ $roleConfig['label'] }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if ($user->full_position)
+                                        <div class="text-xs text-gray-700">{{ $user->full_position }}</div>
                                     @else
-                                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded">🕌
-                                            Jamaah</span>
+                                        <span class="text-xs text-gray-400">-</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -220,6 +246,7 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
                                                             d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                        Lanjutkan09.02
                                                     @else
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
@@ -297,7 +324,6 @@
             return {
                 async toggleStatus(id, currentStatus) {
                     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-
                     if (!confirm(`Ubah status user menjadi ${newStatus}?`)) {
                         return;
                     }
@@ -355,7 +381,7 @@
                 async deleteUser(id, name) {
                     if (!confirm(
                             `Apakah Anda yakin ingin menghapus user "${name}"?\n\nTindakan ini tidak dapat dibatalkan!`
-                            )) {
+                        )) {
                         return;
                     }
 
