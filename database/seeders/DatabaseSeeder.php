@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\EventRegistration;
+use App\Models\Expense;
 use App\Models\Feedback;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -39,6 +40,11 @@ class DatabaseSeeder extends Seeder
             BudgetAllocationSeeder::class,
             SponsorshipSeeder::class,
             IncomeSeeder::class,
+            ExpenseSeeder::class,
+            SOPSeeder::class,
+            WorkInstructionSeeder::class,
+            TemplateSeeder::class,
+            DocumentSeeder::class,
         ]);
     }
 }

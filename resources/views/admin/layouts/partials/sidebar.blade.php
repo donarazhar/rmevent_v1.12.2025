@@ -203,20 +203,6 @@
                 <x-sidebar-link href="{{ route('admin.cash-flow.index') }}" :active="request()->routeIs('admin.cash-flow.*')">Cash
                     Flow</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
-
-            {{-- Laporan Keuangan --}}
-            <x-sidebar-dropdown-collapsible title="Laporan Keuangan"
-                icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'
-                :active="request()->routeIs('admin.financial-reports.*')">
-                <x-sidebar-link href="{{ route('admin.financial-reports.budget-vs-actual') }}"
-                    :active="request()->routeIs('admin.financial-reports.budget-vs-actual')">Budget vs Actual</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.financial-reports.income-statement') }}"
-                    :active="request()->routeIs('admin.financial-reports.income-statement')">Income Statement</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.financial-reports.variance-analysis') }}"
-                    :active="request()->routeIs('admin.financial-reports.variance-analysis')">Variance Analysis</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.financial-reports.summary') }}" :active="request()->routeIs('admin.financial-reports.summary')">Financial
-                    Summary</x-sidebar-link>
-            </x-sidebar-dropdown-collapsible>
         </div>
 
         {{-- ============================================================ --}}

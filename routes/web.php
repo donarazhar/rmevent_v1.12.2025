@@ -377,7 +377,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/timeline', [MilestoneController::class, 'timeline'])->name('timeline');
         Route::get('/kanban', [MilestoneController::class, 'kanban'])->name('kanban');
     });
-    
+
     // Progress Reports
     Route::resource('progress-reports', ProgressReportController::class);
     Route::post('/progress-reports/{report}/submit', [ProgressReportController::class, 'submit'])->name('progress-reports.submit');
@@ -436,7 +436,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/expenses/{expense}/receipt', [ExpenseController::class, 'uploadReceipt'])->name('expenses.receipt');
     Route::post('/expenses/bulk-approve', [ExpenseController::class, 'bulkApprove'])->name('expenses.bulk-approve');
     Route::get('/expenses/export', [ExpenseController::class, 'export'])->name('expenses.export');
-    
+
 
     // Cash Flow
     Route::prefix('cash-flow')->name('cash-flow.')->group(function () {
@@ -483,11 +483,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // SOP Library
     Route::resource('sops', SOPController::class);
+    Route::post('/sops/{sop}/approve', [SOPController::class, 'approve'])->name('sops.approve');
+    Route::post('/sops/{sop}/reject', [SOPController::class, 'reject'])->name('sops.reject');
     Route::post('/sops/{sop}/publish', [SOPController::class, 'publish'])->name('sops.publish');
     Route::post('/sops/{sop}/archive', [SOPController::class, 'archive'])->name('sops.archive');
-    Route::post('/sops/{sop}/duplicate', [SOPController::class, 'duplicate'])->name('sops.duplicate');
-    Route::get('/sops/{sop}/download', [SOPController::class, 'download'])->name('sops.download');
-    Route::post('/sops/{sop}/version', [SOPController::class, 'createVersion'])->name('sops.version');
+    Route::post('/sops/{sop}/create-version', [SOPController::class, 'createVersion'])->name('sops.create-version');
+    Route::post('/sops/{sop}/download', [SOPController::class, 'download'])->name('sops.download');
+    Route::get('/sops/export', [SOPController::class, 'export'])->name('sops.export');
 
     // Work Instructions
     Route::resource('work-instructions', WorkInstructionController::class);
