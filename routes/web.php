@@ -524,12 +524,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/proposals/{proposal}/download', [ProposalController::class, 'download'])->name('proposals.download');
     Route::get('/proposals/{proposal}/print', [ProposalController::class, 'print'])->name('proposals.print');
 
-    // Meeting Minutes (Notulensi)
     Route::resource('meeting-minutes', MeetingMinuteController::class);
-    Route::post('/meeting-minutes/{minute}/finalize', [MeetingMinuteController::class, 'finalize'])->name('meeting-minutes.finalize');
-    Route::post('/meeting-minutes/{minute}/send', [MeetingMinuteController::class, 'send'])->name('meeting-minutes.send');
-    Route::get('/meeting-minutes/{minute}/download', [MeetingMinuteController::class, 'download'])->name('meeting-minutes.download');
-    Route::get('/meeting-minutes/{minute}/print', [MeetingMinuteController::class, 'print'])->name('meeting-minutes.print');
+    Route::post('/meeting-minutes/{meetingMinute}/finalize', [MeetingMinuteController::class, 'finalize'])
+        ->name('meeting-minutes.finalize');
+    Route::post('/meeting-minutes/{meetingMinute}/send', [MeetingMinuteController::class, 'send'])
+        ->name('meeting-minutes.send');
+    Route::get('/meeting-minutes/{meetingMinute}/download', [MeetingMinuteController::class, 'download'])
+        ->name('meeting-minutes.download');
+    Route::get('/meeting-minutes/{meetingMinute}/print', [MeetingMinuteController::class, 'print'])
+        ->name('meeting-minutes.print');
 
     // Contracts & Agreements
     Route::resource('contracts', ContractController::class);
@@ -541,13 +544,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Official Letters (Surat Menyurat)
     Route::resource('official-letters', OfficialLetterController::class);
-    Route::post('/official-letters/{letter}/send', [OfficialLetterController::class, 'send'])->name('official-letters.send');
-    Route::post('/official-letters/{letter}/archive', [OfficialLetterController::class, 'archive'])->name('official-letters.archive');
-    Route::get('/official-letters/{letter}/download', [OfficialLetterController::class, 'download'])->name('official-letters.download');
-    Route::get('/official-letters/{letter}/print', [OfficialLetterController::class, 'print'])->name('official-letters.print');
+    Route::post('/official-letters/{officialLetter}/submit', [OfficialLetterController::class, 'submitForApproval'])->name('official-letters.submit');
+    Route::post('/official-letters/{officialLetter}/approve', [OfficialLetterController::class, 'approve'])->name('official-letters.approve');
+    Route::post('/official-letters/{officialLetter}/reject', [OfficialLetterController::class, 'reject'])->name('official-letters.reject');
+    Route::post('/official-letters/{officialLetter}/send', [OfficialLetterController::class, 'send'])->name('official-letters.send');
+    Route::post('/official-letters/{officialLetter}/archive', [OfficialLetterController::class, 'archive'])->name('official-letters.archive');
+    Route::get('/official-letters/{officialLetter}/download', [OfficialLetterController::class, 'download'])->name('official-letters.download');
+    Route::get('/official-letters/{officialLetter}/print', [OfficialLetterController::class, 'print'])->name('official-letters.print');
     Route::post('/official-letters/generate-number', [OfficialLetterController::class, 'generateNumber'])->name('official-letters.generate-number');
-
-
     // =============================================================================
     // 5. ANALISIS & LAPORAN 📈
     // =============================================================================

@@ -16,7 +16,7 @@ class Proposal extends Model
     protected $fillable = [
         'event_id',
         'structure_id',
-        'proposal_code',
+        // 'proposal_code',
         'title',
         'description',
         'type',

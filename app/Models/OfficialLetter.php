@@ -558,7 +558,7 @@ class OfficialLetter extends Model
         }
 
         // Add your permission logic here
-        return $user->hasRole(['admin', 'approver', 'chairman']);
+        return $user->hasRole(['admin', 'panitia', 'chairman']);
     }
 
     public static function generateLetterNumber(string $direction = self::DIRECTION_OUTGOING): string

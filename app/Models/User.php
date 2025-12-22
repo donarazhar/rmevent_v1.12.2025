@@ -159,6 +159,44 @@ class User extends Authenticatable
      * Helper Methods
      */
 
+    /**
+     * Check if user has specific role
+     * 
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Check if user has any of the given roles
+     * 
+     * @param array $roles
+     * @return bool
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return in_array($this->role, $roles);
+    }
+
+    /**
+     * Check if user has all of the given roles
+     * 
+     * @param array $roles
+     * @return bool
+     */
+    public function hasAllRoles(array $roles): bool
+    {
+        foreach ($roles as $role) {
+            if ($this->role !== $role) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Check if user is admin
     public function isAdmin()
     {
@@ -199,6 +237,35 @@ class User extends Authenticatable
     public function isJamaah()
     {
         return $this->role === self::ROLE_JAMAAH;
+    }
+
+    /**
+     * Check if user can manage meetings (admin, pengarah, pelaksana, koordinator)
+     * 
+     * @return bool
+     */
+    public function canManageMeetings(): bool
+    {
+        return in_array($this->role, [
+            self::ROLE_ADMIN,
+            self::ROLE_PENGARAH,
+            self::ROLE_PELAKSANA,
+            self::ROLE_KOORDINATOR,
+        ]);
+    }
+
+    /**
+     * Check if user can finalize meetings
+     * 
+     * @return bool
+     */
+    public function canFinalizeMeetings(): bool
+    {
+        return in_array($this->role, [
+            self::ROLE_ADMIN,
+            self::ROLE_PENGARAH,
+            self::ROLE_PELAKSANA,
+        ]);
     }
 
     // Check if user is active

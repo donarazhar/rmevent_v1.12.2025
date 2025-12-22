@@ -121,7 +121,7 @@ class MeetingMinute extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             self::STATUS_DRAFT => 'Draft',
             self::STATUS_FINALIZED => 'Finalisasi',
             self::STATUS_DISTRIBUTED => 'Didistribusikan',
@@ -215,19 +215,19 @@ class MeetingMinute extends Model
     public function scopeUpcoming($query)
     {
         return $query->where('meeting_date', '>', now())
-                    ->orderBy('meeting_date', 'asc');
+            ->orderBy('meeting_date', 'asc');
     }
 
     public function scopePast($query)
     {
         return $query->where('meeting_date', '<=', now())
-                    ->orderBy('meeting_date', 'desc');
+            ->orderBy('meeting_date', 'desc');
     }
 
     public function scopeThisMonth($query)
     {
         return $query->whereMonth('meeting_date', now()->month)
-                    ->whereYear('meeting_date', now()->year);
+            ->whereYear('meeting_date', now()->year);
     }
 
     public function scopeThisYear($query)
@@ -244,8 +244,8 @@ class MeetingMinute extends Model
     {
         return $query->where(function ($q) use ($search) {
             $q->where('meeting_title', 'like', "%{$search}%")
-              ->orWhere('minute_code', 'like', "%{$search}%")
-              ->orWhere('location', 'like', "%{$search}%");
+                ->orWhere('minute_code', 'like', "%{$search}%")
+                ->orWhere('location', 'like', "%{$search}%");
         });
     }
 
@@ -255,7 +255,7 @@ class MeetingMinute extends Model
     public function addParticipant(int $userId): void
     {
         $participants = $this->participants ?? [];
-        
+
         if (!in_array($userId, $participants)) {
             $participants[] = $userId;
             $this->update(['participants' => $participants]);
@@ -272,7 +272,7 @@ class MeetingMinute extends Model
     public function addAbsentMember(int $userId): void
     {
         $absentMembers = $this->absent_members ?? [];
-        
+
         if (!in_array($userId, $absentMembers)) {
             $absentMembers[] = $userId;
             $this->update(['absent_members' => $absentMembers]);
@@ -291,10 +291,10 @@ class MeetingMinute extends Model
     {
         // $actionItem = ['task' => '...', 'assignee' => userId, 'deadline' => date, 'status' => 'pending']
         $actionItems = $this->action_items_list ?? [];
-        
+
         $actionItem['created_at'] = now()->toDateTimeString();
         $actionItem['status'] = $actionItem['status'] ?? 'pending';
-        
+
         $actionItems[] = $actionItem;
         $this->update(['action_items_list' => $actionItems]);
     }
@@ -302,17 +302,17 @@ class MeetingMinute extends Model
     public function updateActionItemStatus(int $index, string $status): bool
     {
         $actionItems = $this->action_items_list ?? [];
-        
+
         if (!isset($actionItems[$index])) {
             return false;
         }
-        
+
         $actionItems[$index]['status'] = $status;
-        
+
         if ($status === 'completed') {
             $actionItems[$index]['completed_at'] = now()->toDateTimeString();
         }
-        
+
         return $this->update(['action_items_list' => $actionItems]);
     }
 
@@ -328,7 +328,7 @@ class MeetingMinute extends Model
         $attachments = $this->attachments ?? [];
         $attachments = array_filter($attachments, fn($file) => $file !== $filePath);
         $this->update(['attachments' => array_values($attachments)]);
-        
+
         // Delete file from storage
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
@@ -420,6 +420,12 @@ class MeetingMinute extends Model
         return $this->status === self::STATUS_ARCHIVED;
     }
 
+    /**
+     * Check if meeting minute can be edited by user
+     * 
+     * @param User $user
+     * @return bool
+     */
     public function canBeEditedBy(User $user): bool
     {
         // Only draft minutes can be edited
@@ -432,32 +438,49 @@ class MeetingMinute extends Model
             return true;
         }
 
-        // Admin can always edit
-        return $user->hasRole('admin');
+        // Admin, Pengarah, Pelaksana can edit
+        return $user->hasAnyRole([
+            User::ROLE_ADMIN,
+            User::ROLE_PENGARAH,
+            User::ROLE_PELAKSANA,
+        ]);
     }
 
+    /**
+     * Check if meeting minute can be finalized by user
+     * 
+     * @param User $user
+     * @return bool
+     */
     public function canBeFinalizedBy(User $user): bool
     {
         if ($this->status !== self::STATUS_DRAFT) {
             return false;
         }
 
-        // Chairman, secretary, or admin can finalize
-        return $this->chairman === $user->id || 
-               $this->secretary === $user->id || 
-               $user->hasRole('admin');
+        // Chairman, secretary can finalize
+        if ($this->chairman === $user->id || $this->secretary === $user->id) {
+            return true;
+        }
+
+        // Admin, Pengarah, Pelaksana can finalize
+        return $user->hasAnyRole([
+            User::ROLE_ADMIN,
+            User::ROLE_PENGARAH,
+            User::ROLE_PELAKSANA,
+        ]);
     }
 
     public function getAttendanceRate(): float
     {
         $totalInvited = count($this->participants ?? []) + count($this->absent_members ?? []);
-        
+
         if ($totalInvited === 0) {
             return 0;
         }
 
         $attended = count($this->participants ?? []);
-        
+
         return round(($attended / $totalInvited) * 100, 2);
     }
 
@@ -492,12 +515,12 @@ class MeetingMinute extends Model
         }
 
         $now = now();
-        
+
         return collect($this->action_items_list)
             ->filter(function ($item) use ($now) {
-                return isset($item['deadline']) && 
-                       Carbon::parse($item['deadline'])->isPast() &&
-                       $item['status'] !== 'completed';
+                return isset($item['deadline']) &&
+                    Carbon::parse($item['deadline'])->isPast() &&
+                    $item['status'] !== 'completed';
             })
             ->values()
             ->toArray();
@@ -507,12 +530,12 @@ class MeetingMinute extends Model
     {
         $year = now()->year;
         $latestMinute = static::whereYear('created_at', $year)
-                             ->latest('id')
-                             ->first();
-        
-        $number = $latestMinute ? 
-                  ((int) substr($latestMinute->minute_code, -3) + 1) : 1;
-        
+            ->latest('id')
+            ->first();
+
+        $number = $latestMinute ?
+            ((int) substr($latestMinute->minute_code, -3) + 1) : 1;
+
         return 'MM-' . $year . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
     }
 

@@ -35,8 +35,8 @@ class DatabaseSeeder extends Seeder
             ProjectTimelineSeeder::class,
             MilestoneSeeder::class,
             ProgressReportSeeder::class,
-            BudgetSeeder::class,          
-            BudgetItemSeeder::class,       
+            BudgetSeeder::class,
+            BudgetItemSeeder::class,
             BudgetAllocationSeeder::class,
             SponsorshipSeeder::class,
             IncomeSeeder::class,
@@ -45,6 +45,10 @@ class DatabaseSeeder extends Seeder
             WorkInstructionSeeder::class,
             TemplateSeeder::class,
             DocumentSeeder::class,
+            ProposalSeeder::class,
+            MeetingMinuteSeeder::class,
+            ContractSeeder::class,
+            OfficialLetterSeeder::class,
         ]);
     }
 }
