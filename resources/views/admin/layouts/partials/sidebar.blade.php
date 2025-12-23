@@ -90,44 +90,46 @@
                 <div class="border-t border-white/20"></div>
             </div>
 
-            {{-- Frontend Management --}}
-            <x-sidebar-dropdown-collapsible title="Frontend Mgmt"
+            {{-- Manajemen Website --}}
+            <x-sidebar-dropdown-collapsible title="Manajemen Website"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'
                 :active="request()->routeIs('admin.pages.*', 'admin.sliders.*', 'admin.faqs.*', 'admin.media.*')">
-                <x-sidebar-link href="{{ route('admin.pages.index') }}" :active="request()->routeIs('admin.pages.*')">Pages</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.sliders.index') }}"
-                    :active="request()->routeIs('admin.sliders.*')">Sliders/Banners</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.faqs.index') }}" :active="request()->routeIs('admin.faqs.*')">FAQs</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.media.index') }}" :active="request()->routeIs('admin.media.*')">Gallery</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.pages.index') }}" :active="request()->routeIs('admin.pages.*')">Halaman Web</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.sliders.index') }}" :active="request()->routeIs('admin.sliders.*')">Banner &
+                    Slider</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.faqs.index') }}" :active="request()->routeIs('admin.faqs.*')">Tanya Jawab
+                    (FAQ)</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.media.index') }}" :active="request()->routeIs('admin.media.*')">Galeri Media</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
 
-            {{-- Event Management --}}
-            <x-sidebar-dropdown-collapsible title="Event Mgmt"
+            {{-- Manajemen Acara --}}
+            <x-sidebar-dropdown-collapsible title="Manajemen Acara"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>'
                 :active="request()->routeIs('admin.events.*', 'admin.registrations.*')">
-                <x-sidebar-link href="{{ route('admin.events.index') }}" :active="request()->routeIs('admin.events.*')">Events</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.registrations.index') }}"
-                    :active="request()->routeIs('admin.registrations.*')">Registrations</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.events.index') }}" :active="request()->routeIs('admin.events.*')">Daftar Acara</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.registrations.index') }}" :active="request()->routeIs('admin.registrations.*')">Pendaftaran
+                    Peserta</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
 
-            {{-- Content Management --}}
-            <x-sidebar-dropdown-collapsible title="Content Mgmt"
+            {{-- Manajemen Konten --}}
+            <x-sidebar-dropdown-collapsible title="Manajemen Konten"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>'
                 :active="request()->routeIs('admin.posts.*', 'admin.categories.*', 'admin.tags.*')">
-                <x-sidebar-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.*')">Blog Posts</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.categories.index') }}"
-                    :active="request()->routeIs('admin.categories.*')">Categories</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.tags.index') }}" :active="request()->routeIs('admin.tags.*')">Tags</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.*')">Artikel Blog</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">Kategori
+                    Artikel</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.tags.index') }}" :active="request()->routeIs('admin.tags.*')">Label
+                    Artikel</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
 
-            {{-- Engagement --}}
-            <x-sidebar-dropdown-collapsible title="Engagement"
+            {{-- Interaksi Pengguna --}}
+            <x-sidebar-dropdown-collapsible title="Interaksi Pengguna"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>'
                 :active="request()->routeIs('admin.feedbacks.*', 'admin.contact-messages.*')">
-                <x-sidebar-link href="{{ route('admin.feedbacks.index') }}"
-                    :active="request()->routeIs('admin.feedbacks.*')">Feedbacks</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.contact-messages.index') }}" :active="request()->routeIs('admin.contact-messages.*')">Contact
-                    Messages</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.feedbacks.index') }}" :active="request()->routeIs('admin.feedbacks.*')">Masukan &
+                    Saran</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.contact-messages.index') }}" :active="request()->routeIs('admin.contact-messages.*')">Pesan
+                    Kontak</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
         </div>
 
@@ -143,28 +145,28 @@
                 <div class="border-t border-white/20"></div>
             </div>
 
-            {{-- Kepanitiaan --}}
-            <x-sidebar-dropdown-collapsible title="Kepanitiaan"
+            {{-- Organisasi Kepanitiaan --}}
+            <x-sidebar-dropdown-collapsible title="Organisasi Kepanitiaan"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>'
                 :active="request()->routeIs('admin.committee.*', 'admin.jobdescs.*', 'admin.evaluations.*')">
                 <x-sidebar-link href="{{ route('admin.committee.structure.index') }}" :active="request()->routeIs('admin.committee.structure.index')">Struktur
                     Organisasi</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.jobdescs.index') }}" :active="request()->routeIs('admin.jobdescs.*')">Jobdesc &
-                    Assignment</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.evaluations.index') }}" :active="request()->routeIs('admin.evaluations.*')">Performance
-                    Evaluation</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.jobdescs.index') }}" :active="request()->routeIs('admin.jobdescs.*')">Tugas &
+                    Penugasan</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.evaluations.index') }}" :active="request()->routeIs('admin.evaluations.*')">Evaluasi
+                    Kinerja</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
 
-            {{-- Timeline & Milestone --}}
-            <x-sidebar-dropdown-collapsible title="Timeline & Milestone"
+            {{-- Jadwal & Pencapaian --}}
+            <x-sidebar-dropdown-collapsible title="Jadwal & Pencapaian"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>'
                 :active="request()->routeIs('admin.timeline.*', 'admin.milestone.*', 'admin.progress-reports.*')">
-                <x-sidebar-link href="{{ route('admin.timeline.index') }}" :active="request()->routeIs('admin.timeline.index')">Project
-                    Timeline</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.milestone.index') }}" :active="request()->routeIs('admin.milestone.*')">Milestone
-                    Tracking</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.progress-reports.index') }}" :active="request()->routeIs('admin.progress-reports.*')">Progress
-                    Reports</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.timeline.index') }}" :active="request()->routeIs('admin.timeline.index')">Timeline
+                    Kegiatan</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.milestone.index') }}" :active="request()->routeIs('admin.milestone.*')">Pantau
+                    Pencapaian</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.progress-reports.index') }}" :active="request()->routeIs('admin.progress-reports.*')">Laporan
+                    Kemajuan</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
         </div>
 
@@ -180,28 +182,28 @@
                 <div class="border-t border-white/20"></div>
             </div>
 
-            {{-- Perencanaan --}}
-            <x-sidebar-dropdown-collapsible title="Perencanaan"
+            {{-- Perencanaan Keuangan --}}
+            <x-sidebar-dropdown-collapsible title="Perencanaan Keuangan"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>'
                 :active="request()->routeIs('admin.budgets.*', 'admin.budget-allocations.*', 'admin.sponsorships.*')">
-                <x-sidebar-link href="{{ route('admin.budgets.index') }}" :active="request()->routeIs('admin.budgets.*')">Budget Planning
+                <x-sidebar-link href="{{ route('admin.budgets.index') }}" :active="request()->routeIs('admin.budgets.*')">Rencana Anggaran Biaya
                     (RAB)</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.budget-allocations.index') }}" :active="request()->routeIs('admin.budget-allocations.*')">Budget
-                    Allocation</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.sponsorships.index') }}" :active="request()->routeIs('admin.sponsorships.*')">Sponsorship
-                    Management</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.budget-allocations.index') }}" :active="request()->routeIs('admin.budget-allocations.*')">Alokasi
+                    Anggaran</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.sponsorships.index') }}" :active="request()->routeIs('admin.sponsorships.*')">Manajemen
+                    Sponsor</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
 
-            {{-- Transaksi --}}
-            <x-sidebar-dropdown-collapsible title="Transaksi"
+            {{-- Transaksi Keuangan --}}
+            <x-sidebar-dropdown-collapsible title="Transaksi Keuangan"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>'
                 :active="request()->routeIs('admin.incomes.*', 'admin.expenses.*', 'admin.cash-flow.*')">
-                <x-sidebar-link href="{{ route('admin.incomes.index') }}" :active="request()->routeIs('admin.incomes.*')">Income
-                    (Pemasukan)</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.expenses.index') }}" :active="request()->routeIs('admin.expenses.*')">Expenses
-                    (Pengeluaran)</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.cash-flow.index') }}" :active="request()->routeIs('admin.cash-flow.*')">Cash
-                    Flow</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.incomes.index') }}"
+                    :active="request()->routeIs('admin.incomes.*')">Pemasukan</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.expenses.index') }}"
+                    :active="request()->routeIs('admin.expenses.*')">Pengeluaran</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.cash-flow.index') }}" :active="request()->routeIs('admin.cash-flow.*')">Arus
+                    Kas</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
         </div>
 
@@ -217,8 +219,8 @@
                 <div class="border-t border-white/20"></div>
             </div>
 
-            {{-- Dokumentasi --}}
-            <x-sidebar-dropdown-collapsible title="Dokumentasi"
+            {{-- Dokumentasi & Panduan --}}
+            <x-sidebar-dropdown-collapsible title="Dokumentasi & Panduan"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>'
                 :active="request()->routeIs(
                     'admin.sops.*',
@@ -226,17 +228,17 @@
                     'admin.templates.*',
                     'admin.documents.*',
                 )">
-                <x-sidebar-link href="{{ route('admin.sops.index') }}" :active="request()->routeIs('admin.sops.*')">SOP Library</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.work-instructions.index') }}" :active="request()->routeIs('admin.work-instructions.*')">Work
-                    Instructions</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.templates.index') }}" :active="request()->routeIs('admin.templates.*')">Templates
-                    Library</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.documents.index') }}" :active="request()->routeIs('admin.documents.*')">Documentation
-                    Repository</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.sops.index') }}" :active="request()->routeIs('admin.sops.*')">Pustaka SOP</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.work-instructions.index') }}" :active="request()->routeIs('admin.work-instructions.*')">Instruksi
+                    Kerja</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.templates.index') }}" :active="request()->routeIs('admin.templates.*')">Pustaka
+                    Template</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.documents.index') }}" :active="request()->routeIs('admin.documents.*')">Repositori
+                    Dokumen</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
 
-            {{-- Administrasi --}}
-            <x-sidebar-dropdown-collapsible title="Administrasi"
+            {{-- Administrasi & Surat --}}
+            <x-sidebar-dropdown-collapsible title="Administrasi & Surat"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'
                 :active="request()->routeIs(
                     'admin.proposals.*',
@@ -244,14 +246,14 @@
                     'admin.contracts.*',
                     'admin.official-letters.*',
                 )">
-                <x-sidebar-link href="{{ route('admin.proposals.index') }}" :active="request()->routeIs('admin.proposals.*')">Proposals &
-                    Reports</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.meeting-minutes.index') }}" :active="request()->routeIs('admin.meeting-minutes.*')">Meeting
-                    Minutes</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.contracts.index') }}" :active="request()->routeIs('admin.contracts.*')">Contracts &
-                    Agreements</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.official-letters.index') }}" :active="request()->routeIs('admin.official-letters.*')">Official
-                    Letters</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.proposals.index') }}" :active="request()->routeIs('admin.proposals.*')">Proposal &
+                    Laporan</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.meeting-minutes.index') }}" :active="request()->routeIs('admin.meeting-minutes.*')">Notulen
+                    Rapat</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.contracts.index') }}" :active="request()->routeIs('admin.contracts.*')">Kontrak &
+                    Perjanjian</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.official-letters.index') }}" :active="request()->routeIs('admin.official-letters.*')">Surat
+                    Resmi</x-sidebar-link>
             </x-sidebar-dropdown-collapsible>
         </div>
 
@@ -268,7 +270,7 @@
             </div>
 
             {{-- Analytics Dashboard --}}
-            <x-sidebar-dropdown-collapsible title="Analytics Dashboard"
+            {{-- <x-sidebar-dropdown-collapsible title="Analytics Dashboard"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>'
                 :active="request()->routeIs('admin.analytics.*')">
                 <x-sidebar-link href="{{ route('admin.analytics.event') }}" :active="request()->routeIs('admin.analytics.event')">Event
@@ -279,20 +281,20 @@
                     Trends</x-sidebar-link>
                 <x-sidebar-link href="{{ route('admin.analytics.performance') }}" :active="request()->routeIs('admin.analytics.performance')">Performance
                     Metrics</x-sidebar-link>
-            </x-sidebar-dropdown-collapsible>
+            </x-sidebar-dropdown-collapsible> --}}
 
-            {{-- Report Builder --}}
-            <x-sidebar-dropdown-collapsible title="Report Builder"
+            {{-- Pembuat Laporan --}}
+            <x-sidebar-dropdown-collapsible title="Pembuat Laporan"
                 icon='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'
                 :active="request()->routeIs('admin.reports.*')">
-                <x-sidebar-link href="{{ route('admin.reports.custom') }}" :active="request()->routeIs('admin.reports.custom')">Custom
-                    Reports</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.reports.executive-summary') }}" :active="request()->routeIs('admin.reports.executive-summary')">Executive
-                    Summary</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.reports.final-event') }}" :active="request()->routeIs('admin.reports.final-event')">Final Event
-                    Report</x-sidebar-link>
-                <x-sidebar-link href="{{ route('admin.reports.comparative') }}" :active="request()->routeIs('admin.reports.comparative')">Comparative
-                    Analysis (YoY)</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.reports.custom.index') }}" :active="request()->routeIs('admin.reports.custom.index')">Laporan
+                    Kustom</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.reports.executive-summaries.index') }}" :active="request()->routeIs('admin.reports.executive-summaries.index')">Ringkasan
+                    Eksekutif</x-sidebar-link>
+                <x-sidebar-link href="{{ route('admin.reports.final-event-reports.index') }}" :active="request()->routeIs('admin.reports.final-event-reports.index')">Laporan Akhir
+                    Kegiatan</x-sidebar-link>
+                {{-- <x-sidebar-link href="{{ route('admin.reports.comparative') }}" :active="request()->routeIs('admin.reports.comparative')">Analisis
+                    Perbandingan Tahunan</x-sidebar-link> --}}
             </x-sidebar-dropdown-collapsible>
         </div>
 
@@ -318,12 +320,12 @@
                       {{ request()->routeIs('admin.users.*')
                           ? 'bg-white/20 text-white font-medium'
                           : 'text-white/70 hover:bg-white/10 hover:text-white' }}"
-                :class="sidebarCollapsed ? 'justify-center px-2' : ''" title="Users & Roles">
+                :class="sidebarCollapsed ? 'justify-center px-2' : ''" title="Pengguna & Hak Akses">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                <span x-show="!sidebarCollapsed" x-transition>Users & Roles</span>
+                <span x-show="!sidebarCollapsed" x-transition>Pengguna & Hak Akses</span>
             </a>
 
             <a href="{{ route('admin.settings.index') }}"
@@ -331,30 +333,29 @@
                       {{ request()->routeIs('admin.settings.*')
                           ? 'bg-white/20 text-white font-medium'
                           : 'text-white/70 hover:bg-white/10 hover:text-white' }}"
-                :class="sidebarCollapsed ? 'justify-center px-2' : ''" title="Settings">
+                :class="sidebarCollapsed ? 'justify-center px-2' : ''" title="Pengaturan Sistem">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span x-show="!sidebarCollapsed" x-transition>Settings</span>
+                <span x-show="!sidebarCollapsed" x-transition>Pengaturan Sistem</span>
             </a>
             <a href="{{ route('admin.activity-logs.index') }}"
                 class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all duration-200
-                                  {{ request()->routeIs('admin.activity-logs.*')
-                                      ? 'bg-white/20 text-white font-medium'
-                                      : 'text-white/70 hover:bg-white/10 hover:text-white' }}"
-                :class="sidebarCollapsed ? 'justify-center px-2' : ''" title="Activity Logs">
+                               {{ request()->routeIs('admin.activity-logs.*')
+                                   ? 'bg-white/20 text-white font-medium'
+                                   : 'text-white/70 hover:bg-white/10 hover:text-white' }}"
+                :class="sidebarCollapsed ? 'justify-center px-2' : ''" title="Riwayat Aktivitas">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span x-show="!sidebarCollapsed" x-transition>Activity Logs</span>
+                <span x-show="!sidebarCollapsed" x-transition>Riwayat Aktivitas</span>
             </a>
         </div>
     </nav>
-
     {{-- Footer User Info --}}
     <div class="flex-shrink-0 p-4 border-t border-white/10 bg-[#002860]">
         <div class="flex items-center gap-3" :class="sidebarCollapsed ? 'justify-center px-0' : 'px-2'">

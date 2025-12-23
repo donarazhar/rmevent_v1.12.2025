@@ -49,6 +49,9 @@ class DatabaseSeeder extends Seeder
             MeetingMinuteSeeder::class,
             ContractSeeder::class,
             OfficialLetterSeeder::class,
+            CustomReportSeeder::class,
+            ExecutiveSummarySeeder::class,
+            FinalEventReportSeeder::class,
         ]);
     }
 }

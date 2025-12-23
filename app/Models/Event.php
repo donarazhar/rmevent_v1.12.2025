@@ -89,12 +89,22 @@ class Event extends Model
     public function confirmedRegistrations()
     {
         return $this->hasMany(EventRegistration::class)
-                    ->where('status', EventRegistration::STATUS_CONFIRMED);
+            ->where('status', EventRegistration::STATUS_CONFIRMED);
     }
 
     public function feedbacks()
     {
         return $this->hasMany(Feedback::class);
+    }
+
+    public function finalEventReports()
+    {
+        return $this->hasMany(FinalEventReport::class);
+    }
+
+    public function finalEventReport()
+    {
+        return $this->hasOne(FinalEventReport::class)->latestOfMany();
     }
 
     /**
@@ -114,35 +124,35 @@ class Event extends Model
     public function scopeUpcoming($query)
     {
         return $query->where('start_datetime', '>', now())
-                     ->orderBy('start_datetime');
+            ->orderBy('start_datetime');
     }
 
     public function scopeOngoing($query)
     {
         return $query->where('start_datetime', '<=', now())
-                     ->where('end_datetime', '>=', now());
+            ->where('end_datetime', '>=', now());
     }
 
     public function scopePast($query)
     {
         return $query->where('end_datetime', '<', now())
-                     ->orderBy('end_datetime', 'desc');
+            ->orderBy('end_datetime', 'desc');
     }
 
     public function scopeRegistrationOpen($query)
     {
         return $query->where('is_registration_open', true)
-                     ->where(function ($q) {
-                         $q->whereNull('registration_end')
-                           ->orWhere('registration_end', '>', now());
-                     });
+            ->where(function ($q) {
+                $q->whereNull('registration_end')
+                    ->orWhere('registration_end', '>', now());
+            });
     }
 
     public function scopeAvailable($query)
     {
         return $query->where(function ($q) {
             $q->whereNull('max_participants')
-              ->orWhereRaw('current_participants < max_participants');
+                ->orWhereRaw('current_participants < max_participants');
         });
     }
 
@@ -152,8 +162,8 @@ class Event extends Model
 
     public function getFeaturedImageUrlAttribute()
     {
-        return $this->featured_image 
-            ? asset('storage/' . $this->featured_image) 
+        return $this->featured_image
+            ? asset('storage/' . $this->featured_image)
             : asset('images/default-event.jpg');
     }
 

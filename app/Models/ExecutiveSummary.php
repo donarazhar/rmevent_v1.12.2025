@@ -115,7 +115,7 @@ class ExecutiveSummary extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             self::STATUS_DRAFT => 'Draft',
             self::STATUS_UNDER_REVIEW => 'Sedang Ditinjau',
             self::STATUS_APPROVED => 'Disetujui',
@@ -194,27 +194,27 @@ class ExecutiveSummary extends Model
     {
         return $query->where(function ($q) use ($startDate, $endDate) {
             $q->whereBetween('period_start', [$startDate, $endDate])
-              ->orWhereBetween('period_end', [$startDate, $endDate])
-              ->orWhere(function ($q2) use ($startDate, $endDate) {
-                  $q2->where('period_start', '<=', $startDate)
-                     ->where('period_end', '>=', $endDate);
-              });
+                ->orWhereBetween('period_end', [$startDate, $endDate])
+                ->orWhere(function ($q2) use ($startDate, $endDate) {
+                    $q2->where('period_start', '<=', $startDate)
+                        ->where('period_end', '>=', $endDate);
+                });
         });
     }
 
     public function scopeThisMonth($query)
     {
         return $query->whereMonth('period_start', now()->month)
-                    ->whereYear('period_start', now()->year);
+            ->whereYear('period_start', now()->year);
     }
 
     public function scopeThisQuarter($query)
     {
         $quarter = now()->quarter;
         $year = now()->year;
-        
+
         return $query->whereRaw('QUARTER(period_start) = ?', [$quarter])
-                    ->whereYear('period_start', $year);
+            ->whereYear('period_start', $year);
     }
 
     public function scopeThisYear($query)
@@ -226,8 +226,8 @@ class ExecutiveSummary extends Model
     {
         return $query->where(function ($q) use ($search) {
             $q->where('title', 'like', "%{$search}%")
-              ->orWhere('summary_code', 'like', "%{$search}%")
-              ->orWhere('executive_overview', 'like', "%{$search}%");
+                ->orWhere('summary_code', 'like', "%{$search}%")
+                ->orWhere('executive_overview', 'like', "%{$search}%");
         });
     }
 
@@ -328,7 +328,7 @@ class ExecutiveSummary extends Model
     {
         // Calculate net result
         $netResult = ($this->total_income ?? 0) - ($this->total_expenses ?? 0);
-        
+
         // Calculate budget utilization if total_income is budget
         $budgetUtilization = null;
         if ($this->total_income && $this->total_income > 0) {
@@ -351,14 +351,14 @@ class ExecutiveSummary extends Model
     public function addPerformanceMetric(string $metric, $value, ?string $unit = null): void
     {
         $performanceMetrics = $this->performance_metrics ?? [];
-        
+
         $performanceMetrics[] = [
             'metric' => $metric,
             'value' => $value,
             'unit' => $unit,
             'timestamp' => now()->toDateTimeString(),
         ];
-        
+
         $this->update(['performance_metrics' => $performanceMetrics]);
     }
 
@@ -372,24 +372,24 @@ class ExecutiveSummary extends Model
     public function addTeamPerformanceData(string $teamName, array $data): void
     {
         $teamPerformance = $this->team_performance ?? [];
-        
+
         $teamPerformance[] = array_merge([
             'team_name' => $teamName,
         ], $data);
-        
+
         $this->update(['team_performance' => $teamPerformance]);
     }
 
     public function addChartData(string $chartType, array $data): void
     {
         $chartsData = $this->charts_data ?? [];
-        
+
         $chartsData[] = [
             'type' => $chartType,
             'data' => $data,
             'created_at' => now()->toDateTimeString(),
         ];
-        
+
         $this->update(['charts_data' => $chartsData]);
     }
 
@@ -405,7 +405,7 @@ class ExecutiveSummary extends Model
         $documents = $this->supporting_documents ?? [];
         $documents = array_filter($documents, fn($doc) => $doc !== $documentPath);
         $this->update(['supporting_documents' => array_values($documents)]);
-        
+
         // Delete file from storage
         if (Storage::exists($documentPath)) {
             Storage::delete($documentPath);
@@ -417,7 +417,7 @@ class ExecutiveSummary extends Model
         // Placeholder for document generation logic
         // You would implement logic here to generate a PDF document
         // containing the executive summary with all data and charts
-        
+
         // Return the path to the generated document
         return '';
     }
@@ -455,7 +455,7 @@ class ExecutiveSummary extends Model
         }
 
         // Admin can edit
-        return $user->hasRole('admin');
+        return $user->hasRole(User::ROLE_ADMIN);
     }
 
     public function canBeReviewedBy(User $user): bool
@@ -464,8 +464,12 @@ class ExecutiveSummary extends Model
             return false;
         }
 
-        // Add your permission logic here
-        return $user->hasRole(['admin', 'reviewer', 'manager']);
+        // Admin, Pengarah, or Pelaksana can review
+        return $user->hasAnyRole([
+            User::ROLE_ADMIN,
+            User::ROLE_PENGARAH,
+            User::ROLE_PELAKSANA,
+        ]);
     }
 
     public function canBeApprovedBy(User $user): bool
@@ -474,8 +478,11 @@ class ExecutiveSummary extends Model
             return false;
         }
 
-        // Add your permission logic here
-        return $user->hasRole(['admin', 'approver', 'director']);
+        // Admin or Pengarah can approve
+        return $user->hasAnyRole([
+            User::ROLE_ADMIN,
+            User::ROLE_PENGARAH,
+        ]);
     }
 
     public function getFinancialHealth(): string
@@ -538,12 +545,12 @@ class ExecutiveSummary extends Model
     {
         $year = now()->year;
         $latestSummary = static::whereYear('created_at', $year)
-                              ->latest('id')
-                              ->first();
-        
-        $number = $latestSummary ? 
-                  ((int) substr($latestSummary->summary_code, -3) + 1) : 1;
-        
+            ->latest('id')
+            ->first();
+
+        $number = $latestSummary ?
+            ((int) substr($latestSummary->summary_code, -3) + 1) : 1;
+
         return 'ES-' . $year . '-' . str_pad($number, 3, '0', STR_PAD_LEFT);
     }
 
@@ -558,7 +565,7 @@ class ExecutiveSummary extends Model
             if (empty($summary->summary_code)) {
                 $summary->summary_code = static::generateSummaryCode();
             }
-            
+
             // Set report_date to today if not set
             if (empty($summary->report_date)) {
                 $summary->report_date = now()->toDateString();
@@ -570,9 +577,9 @@ class ExecutiveSummary extends Model
             if ($summary->isDirty(['total_income', 'total_expenses'])) {
                 $netResult = ($summary->total_income ?? 0) - ($summary->total_expenses ?? 0);
                 $summary->net_result = $netResult;
-                
+
                 if ($summary->total_income && $summary->total_income > 0) {
-                    $summary->budget_utilization_percentage = 
+                    $summary->budget_utilization_percentage =
                         round(($summary->total_expenses / $summary->total_income) * 100, 2);
                 }
             }

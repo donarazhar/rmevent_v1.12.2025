@@ -452,25 +452,25 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Laporan Keuangan
     // -------------------------------------------------------------------------
 
-    Route::prefix('financial-reports')->name('financial-reports.')->group(function () {
-        // Budget vs Actual Report
-        Route::get('/budget-vs-actual', [FinancialReportController::class, 'budgetVsActual'])->name('budget-vs-actual');
-        Route::get('/budget-vs-actual/export', [FinancialReportController::class, 'budgetVsActualExport'])->name('budget-vs-actual.export');
+    // Route::prefix('financial-reports')->name('financial-reports.')->group(function () {
+    //     // Budget vs Actual Report
+    //     Route::get('/budget-vs-actual', [FinancialReportController::class, 'budgetVsActual'])->name('budget-vs-actual');
+    //     Route::get('/budget-vs-actual/export', [FinancialReportController::class, 'budgetVsActualExport'])->name('budget-vs-actual.export');
 
-        // Income Statement
-        Route::get('/income-statement', [FinancialReportController::class, 'incomeStatement'])->name('income-statement');
-        Route::get('/income-statement/export', [FinancialReportController::class, 'incomeStatementExport'])->name('income-statement.export');
+    //     // Income Statement
+    //     Route::get('/income-statement', [FinancialReportController::class, 'incomeStatement'])->name('income-statement');
+    //     Route::get('/income-statement/export', [FinancialReportController::class, 'incomeStatementExport'])->name('income-statement.export');
 
-        // Variance Analysis
-        Route::get('/variance-analysis', [FinancialReportController::class, 'varianceAnalysis'])->name('variance-analysis');
-        Route::get('/variance-analysis/export', [FinancialReportController::class, 'varianceAnalysisExport'])->name('variance-analysis.export');
+    //     // Variance Analysis
+    //     Route::get('/variance-analysis', [FinancialReportController::class, 'varianceAnalysis'])->name('variance-analysis');
+    //     Route::get('/variance-analysis/export', [FinancialReportController::class, 'varianceAnalysisExport'])->name('variance-analysis.export');
 
-        // Financial Summary
-        Route::get('/summary', [FinancialReportController::class, 'summary'])->name('summary');
-        Route::get('/summary/by-event/{event}', [FinancialReportController::class, 'summaryByEvent'])->name('summary.by-event');
-        Route::get('/summary/by-division/{division}', [FinancialReportController::class, 'summaryByDivision'])->name('summary.by-division');
-        Route::get('/summary/export', [FinancialReportController::class, 'summaryExport'])->name('summary.export');
-    });
+    //     // Financial Summary
+    //     Route::get('/summary', [FinancialReportController::class, 'summary'])->name('summary');
+    //     Route::get('/summary/by-event/{event}', [FinancialReportController::class, 'summaryByEvent'])->name('summary.by-event');
+    //     Route::get('/summary/by-division/{division}', [FinancialReportController::class, 'summaryByDivision'])->name('summary.by-division');
+    //     Route::get('/summary/export', [FinancialReportController::class, 'summaryExport'])->name('summary.export');
+    // });
 
 
     // =============================================================================
@@ -560,61 +560,113 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Analytics Dashboard
     // -------------------------------------------------------------------------
 
-    Route::prefix('analytics')->name('analytics.')->group(function () {
-        // Event Analytics
-        Route::get('/event', [EventAnalyticsController::class, 'index'])->name('event');
-        Route::get('/event/{event}', [EventAnalyticsController::class, 'show'])->name('event.show');
-        Route::get('/event/{event}/export', [EventAnalyticsController::class, 'export'])->name('event.export');
+    // Route::prefix('analytics')->name('analytics.')->group(function () {
+    //     // Event Analytics
+    //     Route::get('/event', [EventAnalyticsController::class, 'index'])->name('event');
+    //     Route::get('/event/{event}', [EventAnalyticsController::class, 'show'])->name('event.show');
+    //     Route::get('/event/{event}/export', [EventAnalyticsController::class, 'export'])->name('event.export');
 
-        // Registration Trends
-        Route::get('/registration', [RegistrationAnalyticsController::class, 'index'])->name('registration');
-        Route::get('/registration/trends', [RegistrationAnalyticsController::class, 'trends'])->name('registration.trends');
-        Route::get('/registration/demographics', [RegistrationAnalyticsController::class, 'demographics'])->name('registration.demographics');
-        Route::get('/registration/conversion', [RegistrationAnalyticsController::class, 'conversionRate'])->name('registration.conversion');
-        Route::get('/registration/export', [RegistrationAnalyticsController::class, 'export'])->name('registration.export');
+    //     // Registration Trends
+    //     Route::get('/registration', [RegistrationAnalyticsController::class, 'index'])->name('registration');
+    //     Route::get('/registration/trends', [RegistrationAnalyticsController::class, 'trends'])->name('registration.trends');
+    //     Route::get('/registration/demographics', [RegistrationAnalyticsController::class, 'demographics'])->name('registration.demographics');
+    //     Route::get('/registration/conversion', [RegistrationAnalyticsController::class, 'conversionRate'])->name('registration.conversion');
+    //     Route::get('/registration/export', [RegistrationAnalyticsController::class, 'export'])->name('registration.export');
 
-        // Financial Trends
-        Route::get('/financial', [FinancialAnalyticsController::class, 'index'])->name('financial');
-        Route::get('/financial/trends', [FinancialAnalyticsController::class, 'trends'])->name('financial.trends');
-        Route::get('/financial/breakdown', [FinancialAnalyticsController::class, 'breakdown'])->name('financial.breakdown');
-        Route::get('/financial/forecast', [FinancialAnalyticsController::class, 'forecast'])->name('financial.forecast');
-        Route::get('/financial/export', [FinancialAnalyticsController::class, 'export'])->name('financial.export');
+    //     // Financial Trends
+    //     Route::get('/financial', [FinancialAnalyticsController::class, 'index'])->name('financial');
+    //     Route::get('/financial/trends', [FinancialAnalyticsController::class, 'trends'])->name('financial.trends');
+    //     Route::get('/financial/breakdown', [FinancialAnalyticsController::class, 'breakdown'])->name('financial.breakdown');
+    //     Route::get('/financial/forecast', [FinancialAnalyticsController::class, 'forecast'])->name('financial.forecast');
+    //     Route::get('/financial/export', [FinancialAnalyticsController::class, 'export'])->name('financial.export');
 
-        // Performance Metrics
-        Route::get('/performance', [PerformanceAnalyticsController::class, 'index'])->name('performance');
-        Route::get('/performance/team', [PerformanceAnalyticsController::class, 'teamPerformance'])->name('performance.team');
-        Route::get('/performance/individual/{user}', [PerformanceAnalyticsController::class, 'individualPerformance'])->name('performance.individual');
-        Route::get('/performance/kpi', [PerformanceAnalyticsController::class, 'kpiDashboard'])->name('performance.kpi');
-        Route::get('/performance/export', [PerformanceAnalyticsController::class, 'export'])->name('performance.export');
-    });
+    //     // Performance Metrics
+    //     Route::get('/performance', [PerformanceAnalyticsController::class, 'index'])->name('performance');
+    //     Route::get('/performance/team', [PerformanceAnalyticsController::class, 'teamPerformance'])->name('performance.team');
+    //     Route::get('/performance/individual/{user}', [PerformanceAnalyticsController::class, 'individualPerformance'])->name('performance.individual');
+    //     Route::get('/performance/kpi', [PerformanceAnalyticsController::class, 'kpiDashboard'])->name('performance.kpi');
+    //     Route::get('/performance/export', [PerformanceAnalyticsController::class, 'export'])->name('performance.export');
+    // });
 
     // -------------------------------------------------------------------------
     // Report Builder
     // -------------------------------------------------------------------------
 
     Route::prefix('reports')->name('reports.')->group(function () {
-        // Custom Reports
-        Route::get('/custom', [CustomReportController::class, 'index'])->name('custom');
-        Route::post('/custom/generate', [CustomReportController::class, 'generate'])->name('custom.generate');
-        Route::get('/custom/{report}', [CustomReportController::class, 'show'])->name('custom.show');
-        Route::post('/custom/{report}/save', [CustomReportController::class, 'save'])->name('custom.save');
-        Route::delete('/custom/{report}', [CustomReportController::class, 'destroy'])->name('custom.destroy');
-        Route::get('/custom/{report}/export', [CustomReportController::class, 'export'])->name('custom.export');
 
-        // Executive Summary
-        Route::get('/executive-summary', [ExecutiveSummaryController::class, 'index'])->name('executive-summary');
-        Route::post('/executive-summary/generate', [ExecutiveSummaryController::class, 'generate'])->name('executive-summary.generate');
-        Route::get('/executive-summary/{summary}', [ExecutiveSummaryController::class, 'show'])->name('executive-summary.show');
-        Route::get('/executive-summary/{summary}/download', [ExecutiveSummaryController::class, 'download'])->name('executive-summary.download');
-        Route::get('/executive-summary/{summary}/print', [ExecutiveSummaryController::class, 'print'])->name('executive-summary.print');
+        // Custom Reports CRUD
+        Route::get('/custom', [CustomReportController::class, 'index'])->name('custom.index');
+        Route::get('/custom/create', [CustomReportController::class, 'create'])->name('custom.create');
+        Route::post('/custom', [CustomReportController::class, 'store'])->name('custom.store');
+        Route::get('/custom/{customReport}', [CustomReportController::class, 'show'])->name('custom.show');
+        Route::get('/custom/{customReport}/edit', [CustomReportController::class, 'edit'])->name('custom.edit');
+        Route::put('/custom/{customReport}', [CustomReportController::class, 'update'])->name('custom.update');
+        Route::delete('/custom/{customReport}', [CustomReportController::class, 'destroy'])->name('custom.destroy');
 
-        // Final Event Report
-        Route::get('/final-event', [FinalEventReportController::class, 'index'])->name('final-event');
-        Route::get('/final-event/{event}', [FinalEventReportController::class, 'show'])->name('final-event.show');
-        Route::post('/final-event/{event}/generate', [FinalEventReportController::class, 'generate'])->name('final-event.generate');
-        Route::post('/final-event/{event}/publish', [FinalEventReportController::class, 'publish'])->name('final-event.publish');
-        Route::get('/final-event/{event}/download', [FinalEventReportController::class, 'download'])->name('final-event.download');
-        Route::get('/final-event/{event}/print', [FinalEventReportController::class, 'print'])->name('final-event.print');
+        // Custom Reports Actions
+        Route::post('/custom/{customReport}/generate', [CustomReportController::class, 'generate'])->name('custom.generate');
+        Route::post('/custom/{customReport}/publish', [CustomReportController::class, 'publish'])->name('custom.publish');
+        Route::post('/custom/{customReport}/unpublish', [CustomReportController::class, 'unpublish'])->name('custom.unpublish');
+        Route::post('/custom/{customReport}/duplicate', [CustomReportController::class, 'duplicate'])->name('custom.duplicate');
+        Route::get('/custom/{customReport}/export', [CustomReportController::class, 'export'])->name('custom.export');
+        Route::post('/custom/{customReport}/share', [CustomReportController::class, 'share'])->name('custom.share');
+        Route::post('/custom/{customReport}/toggle-schedule', [CustomReportController::class, 'toggleSchedule'])->name('custom.toggle-schedule');
+
+        // Executive Summaries
+        Route::get('/executive-summaries', [ExecutiveSummaryController::class, 'index'])->name('executive-summaries.index');
+        Route::get('/executive-summaries/create', [ExecutiveSummaryController::class, 'create'])->name('executive-summaries.create');
+        Route::post('/executive-summaries', [ExecutiveSummaryController::class, 'store'])->name('executive-summaries.store');
+        Route::get('/executive-summaries/{executiveSummary}', [ExecutiveSummaryController::class, 'show'])->name('executive-summaries.show');
+        Route::get('/executive-summaries/{executiveSummary}/edit', [ExecutiveSummaryController::class, 'edit'])->name('executive-summaries.edit');
+        Route::put('/executive-summaries/{executiveSummary}', [ExecutiveSummaryController::class, 'update'])->name('executive-summaries.update');
+        Route::delete('/executive-summaries/{executiveSummary}', [ExecutiveSummaryController::class, 'destroy'])->name('executive-summaries.destroy');
+
+        // Workflow Routes
+        Route::post('/executive-summaries/{executiveSummary}/submit-for-review', [ExecutiveSummaryController::class, 'submitForReview'])->name('executive-summaries.submit-for-review');
+        Route::post('/executive-summaries/{executiveSummary}/review', [ExecutiveSummaryController::class, 'review'])->name('executive-summaries.review');
+        Route::post('/executive-summaries/{executiveSummary}/approve', [ExecutiveSummaryController::class, 'approve'])->name('executive-summaries.approve');
+        Route::post('/executive-summaries/{executiveSummary}/publish', [ExecutiveSummaryController::class, 'publish'])->name('executive-summaries.publish');
+        Route::post('/executive-summaries/{executiveSummary}/reject', [ExecutiveSummaryController::class, 'reject'])->name('executive-summaries.reject');
+
+        // Document Management Routes
+        Route::delete('/executive-summaries/{executiveSummary}/documents', [ExecutiveSummaryController::class, 'deleteDocument'])->name('executive-summaries.delete-document');
+        Route::post('/executive-summaries/{executiveSummary}/generate-pdf', [ExecutiveSummaryController::class, 'generatePdf'])->name('executive-summaries.generate-pdf');
+
+        // Utility Routes
+        Route::post('/executive-summaries/{executiveSummary}/duplicate', [ExecutiveSummaryController::class, 'duplicate'])->name('executive-summaries.duplicate');
+
+        // Final Event Reports CRUD
+        Route::resource('final-event-reports', FinalEventReportController::class);
+        Route::post('final-event-reports/{finalEventReport}/submit-for-review', [FinalEventReportController::class, 'submitForReview'])
+            ->name('final-event-reports.submit-for-review');
+        Route::post('final-event-reports/{finalEventReport}/review', [FinalEventReportController::class, 'review'])
+            ->name('final-event-reports.review');
+        Route::post('final-event-reports/{finalEventReport}/approve', [FinalEventReportController::class, 'approve'])
+            ->name('final-event-reports.approve');
+        Route::post('final-event-reports/{finalEventReport}/publish', [FinalEventReportController::class, 'publish'])
+            ->name('final-event-reports.publish');
+        Route::post('final-event-reports/{finalEventReport}/reject', [FinalEventReportController::class, 'reject'])
+            ->name('final-event-reports.reject');
+        Route::post('final-event-reports/{finalEventReport}/upload-photo', [FinalEventReportController::class, 'uploadPhoto'])
+            ->name('final-event-reports.upload-photo');
+        Route::delete('final-event-reports/{finalEventReport}/remove-photo', [FinalEventReportController::class, 'removePhoto'])
+            ->name('final-event-reports.remove-photo');
+        Route::post('final-event-reports/{finalEventReport}/upload-document', [FinalEventReportController::class, 'uploadDocument'])
+            ->name('final-event-reports.upload-document');
+        Route::delete('final-event-reports/{finalEventReport}/remove-document', [FinalEventReportController::class, 'removeDocument'])
+            ->name('final-event-reports.remove-document');
+        Route::post('final-event-reports/{finalEventReport}/generate-pdf', [FinalEventReportController::class, 'generatePdf'])
+            ->name('final-event-reports.generate-pdf');
+        Route::post('final-event-reports/{finalEventReport}/generate-presentation', [FinalEventReportController::class, 'generatePresentation'])
+            ->name('final-event-reports.generate-presentation');
+        Route::get('final-event-reports/{finalEventReport}/download-report', [FinalEventReportController::class, 'downloadReport'])
+            ->name('final-event-reports.download-report');
+        Route::get('final-event-reports/{finalEventReport}/download-presentation', [FinalEventReportController::class, 'downloadPresentation'])
+            ->name('final-event-reports.download-presentation');
+        Route::get('final-event-reports/{finalEventReport}/print', [FinalEventReportController::class, 'print'])
+            ->name('final-event-reports.print');
+        Route::post('final-event-reports/{finalEventReport}/duplicate', [FinalEventReportController::class, 'duplicate'])
+            ->name('final-event-reports.duplicate');
 
         // Comparative Analysis (Year over Year)
         Route::get('/comparative', [ComparativeAnalysisController::class, 'index'])->name('comparative');
@@ -623,7 +675,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/comparative/event-comparison', [ComparativeAnalysisController::class, 'eventComparison'])->name('comparative.events');
         Route::get('/comparative/export', [ComparativeAnalysisController::class, 'export'])->name('comparative.export');
     });
-
 
     // =============================================================================
     // SYSTEM ADMINISTRATION

@@ -277,7 +277,7 @@
         </div>
 
         {{-- Monthly Financial --}}
-        <div class="bg-white rounded-xl shadow-sm p-6">
+        {{-- <div class="bg-white rounded-xl shadow-sm p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold text-gray-900">Pemasukan vs Pengeluaran (6 Bulan)</h3>
                 <a href="{{ route('admin.financial-reports.summary') }}"
@@ -286,7 +286,7 @@
             <div class="h-64">
                 <canvas id="monthlyFinancialChart"></canvas>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     {{-- Charts Row 2 --}}

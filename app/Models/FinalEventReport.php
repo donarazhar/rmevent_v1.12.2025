@@ -525,8 +525,8 @@ class FinalEventReport extends Model
             return false;
         }
 
-        // Add your permission logic here
-        return $user->hasRole(['admin', 'reviewer', 'manager']);
+        // Admin, Penasehat, Pengarah, Pelaksana, dan Koordinator can review
+        return $user->hasAnyRole(['admin', 'penasehat', 'pengarah', 'pelaksana', 'koordinator']);
     }
 
     public function canBeApprovedBy(User $user): bool
@@ -535,8 +535,8 @@ class FinalEventReport extends Model
             return false;
         }
 
-        // Add your permission logic here
-        return $user->hasRole(['admin', 'approver', 'director']);
+        // Admin, Penasehat, Pengarah, dan Pelaksana can approve
+        return $user->hasAnyRole(['admin', 'penasehat', 'pengarah', 'pelaksana']);
     }
 
     public function getFinancialStatus(): string
