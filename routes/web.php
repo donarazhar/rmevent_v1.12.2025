@@ -688,15 +688,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Activity Logs
     Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('index');
-        Route::get('/{log}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('show');
-        Route::delete('/clear-old', [\App\Http\Controllers\Admin\ActivityLogController::class, 'clearOld'])->name('clear-old');
+        Route::get('/{activityLog}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('show');
+        Route::delete('/{activityLog}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-delete', [\App\Http\Controllers\Admin\ActivityLogController::class, 'bulkDelete'])->name('bulk-delete');
+        Route::post('/clear-old', [\App\Http\Controllers\Admin\ActivityLogController::class, 'clearOld'])->name('clear-old');
         Route::get('/export', [\App\Http\Controllers\Admin\ActivityLogController::class, 'export'])->name('export');
+        Route::get('/statistics', [\App\Http\Controllers\Admin\ActivityLogController::class, 'statistics'])->name('statistics');
     });
 
     // Settings Management
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('index');
-        Route::post('/', [SettingController::class, 'update'])->name('update');
+        Route::match(['put', 'post'], '/', [SettingController::class, 'update'])->name('update'); // Support PUT & POST
         Route::post('/clear-cache', [SettingController::class, 'clearCache'])->name('clear-cache');
         Route::post('/backup', [SettingController::class, 'backup'])->name('backup');
         Route::get('/backup/download/{file}', [SettingController::class, 'downloadBackup'])->name('backup.download');

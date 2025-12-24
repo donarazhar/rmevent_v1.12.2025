@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Traits;
 
 use App\Models\ActivityLog;
 
@@ -11,27 +11,81 @@ trait LogsActivity
      */
     protected static function bootLogsActivity()
     {
+        // Log when model is created
         static::created(function ($model) {
-            if (config('activitylog.log_created', true)) {
-                $model->logActivity('created', 'Created ' . class_basename($model));
+            if (method_exists($model, 'shouldLogActivity') && !$model->shouldLogActivity()) {
+                return;
             }
+
+            ActivityLog::logCreated(
+                $model,
+                static::getActivityDescription($model, 'created')
+            );
         });
 
+        // Log when model is updated
         static::updated(function ($model) {
-            if (config('activitylog.log_updated', true)) {
-                $old = $model->getOriginal();
-                $model->logActivity('updated', 'Updated ' . class_basename($model), [
-                    'old' => $old,
-                    'new' => $model->getAttributes(),
-                ]);
+            if (method_exists($model, 'shouldLogActivity') && !$model->shouldLogActivity()) {
+                return;
             }
+
+            $old = $model->getOriginal();
+
+            ActivityLog::logUpdated(
+                $model,
+                $old,
+                static::getActivityDescription($model, 'updated')
+            );
         });
 
+        // Log when model is deleted
         static::deleted(function ($model) {
-            if (config('activitylog.log_deleted', true)) {
-                $model->logActivity('deleted', 'Deleted ' . class_basename($model));
+            if (method_exists($model, 'shouldLogActivity') && !$model->shouldLogActivity()) {
+                return;
             }
+
+            ActivityLog::logDeleted(
+                $model,
+                static::getActivityDescription($model, 'deleted')
+            );
         });
+    }
+
+    /**
+     * Get activity description
+     */
+    protected static function getActivityDescription($model, string $action): string
+    {
+        $modelName = class_basename($model);
+        $userName = auth()->check() ? auth()->user()->name : 'System';
+
+        // Check if model has custom description method
+        if (method_exists($model, 'getActivityDescription')) {
+            return $model->getActivityDescription($action);
+        }
+
+        // Check if model has name or title attribute
+        $identifier = $model->name ?? $model->title ?? "#{$model->id}";
+
+        return match ($action) {
+            'created' => "{$userName} membuat {$modelName}: {$identifier}",
+            'updated' => "{$userName} mengupdate {$modelName}: {$identifier}",
+            'deleted' => "{$userName} menghapus {$modelName}: {$identifier}",
+            default => "{$userName} melakukan {$action} pada {$modelName}: {$identifier}",
+        };
+    }
+
+    /**
+     * Log custom activity
+     */
+    public function logActivity(string $action, ?string $description = null, array $properties = []): ActivityLog
+    {
+        return ActivityLog::log(
+            $action,
+            $this,
+            $description ?? static::getActivityDescription($this, $action),
+            $properties
+        );
     }
 
     /**
@@ -39,48 +93,15 @@ trait LogsActivity
      */
     public function activityLogs()
     {
-        return $this->morphMany(ActivityLog::class, 'subject');
-    }
-
-    /**
-     * Log activity for this model
-     */
-    public function logActivity(
-        string $action,
-        ?string $description = null,
-        array $properties = []
-    ): ActivityLog {
-        return ActivityLog::create([
-            'user_id' => auth()->id(),
-            'action' => $action,
-            'description' => $description ?? ucfirst($action) . ' ' . class_basename($this),
-            'subject_type' => get_class($this),
-            'subject_id' => $this->id,
-            'properties' => $properties,
-            'ip_address' => request()->ip(),
-            'user_agent' => request()->userAgent(),
-        ]);
+        return $this->morphMany(ActivityLog::class, 'subject')
+            ->orderBy('created_at', 'desc');
     }
 
     /**
      * Get recent activity logs
      */
-    public function recentActivity(int $limit = 10)
+    public function recentActivityLogs(int $limit = 10)
     {
-        return $this->activityLogs()
-                    ->orderBy('created_at', 'desc')
-                    ->limit($limit)
-                    ->get();
-    }
-
-    /**
-     * Get activity by action
-     */
-    public function getActivityByAction(string $action)
-    {
-        return $this->activityLogs()
-                    ->where('action', $action)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+        return $this->activityLogs()->limit($limit)->get();
     }
 }

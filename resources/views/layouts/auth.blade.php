@@ -34,31 +34,6 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
-                    // Tambahkan ini untuk scale 80%
-                    screens: {
-                        '2xl': '1536px',
-                    },
-                    maxWidth: {
-                        '8xl': '90rem', // Default container
-                    }
-                },
-                // Override container defaults
-                container: {
-                    center: true,
-                    padding: {
-                        DEFAULT: '1rem',
-                        sm: '2rem',
-                        lg: '4rem',
-                        xl: '5rem',
-                        '2xl': '6rem',
-                    },
-                    screens: {
-                        sm: '640px',
-                        md: '768px',
-                        lg: '1024px',
-                        xl: '1024px', // 80% dari 1280px
-                        '2xl': '1229px', // 80% dari 1536px
-                    }
                 }
             }
         }
@@ -76,9 +51,7 @@
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            /* Prevent horizontal scroll */
             overflow-y: auto;
-            /* Allow vertical scroll */
         }
 
         /* Background Pattern */
@@ -86,13 +59,11 @@
             background: linear-gradient(135deg, #0053C5 0%, #003d8f 50%, #002a5c 100%);
             position: relative;
             min-height: 100vh;
-            /* overflow: hidden removed untuk allow scrolling */
         }
 
         .auth-bg::before {
             content: '';
             position: fixed;
-            /* Changed to fixed so it stays during scroll */
             top: 0;
             left: 0;
             right: 0;
@@ -108,7 +79,6 @@
         .auth-bg::after {
             content: '';
             position: fixed;
-            /* Changed to fixed so it stays during scroll */
             top: -50%;
             left: -50%;
             width: 200%;
@@ -203,27 +173,27 @@
     {{-- TOP BAR (Minimal) --}}
     {{-- ============================================================================ --}}
     <div class="relative z-10">
-        <div class="container mx-auto px-4 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex items-center justify-between">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
                     <div
-                        class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
                     <div class="hidden sm:block">
-                        <div class="text-white text-xl font-bold">Ramadhan 1447 H</div>
+                        <div class="text-white text-lg font-bold">Ramadhan 1447 H</div>
                         <div class="text-blue-200 text-xs">Ecosystem Digital</div>
                     </div>
                 </a>
 
                 {{-- Back to Home Button --}}
                 <a href="{{ route('home') }}"
-                    class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full hover:bg-white/20 transition-all group">
-                    <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none"
+                    class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full hover:bg-white/20 transition-all group">
+                    <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -314,8 +284,9 @@
     {{-- ============================================================================ --}}
     {{-- MAIN CONTENT --}}
     {{-- ============================================================================ --}}
-    <main class="relative z-10 py-12 px-4">
-        <div class="flex items-center justify-center min-h-[calc(100vh-200px)]">
+    <main class="relative z-10 flex items-center justify-center px-4" style="min-height: calc(100vh - 140px);">
+        {{-- Container dengan lebar 80% untuk desktop --}}
+        <div class="w-full max-w-[80%] lg:max-w-6xl xl:max-w-7xl my-4">
             @yield('content')
         </div>
     </main>
@@ -323,8 +294,8 @@
     {{-- ============================================================================ --}}
     {{-- FOOTER (Minimal) --}}
     {{-- ============================================================================ --}}
-    <footer class="relative z-10 py-6 text-center text-white/60 text-sm">
-        <div class="container mx-auto px-4">
+    <footer class="relative z-10 py-3 text-center text-white/60 text-xs">
+        <div class="max-w-7xl mx-auto px-4">
             <p>© {{ date('Y') }} Ecosystem Digital Ramadhan 1447 H. All rights reserved.</p>
         </div>
     </footer>
